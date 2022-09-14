@@ -1,9 +1,9 @@
-
 import { InjectRepository } from '@nestjs/typeorm'
 import { StudentEntity } from '../../students/entities/students.entity'
 import { Repository } from 'typeorm'
 import { CreateUserDTO } from '../model/user.dto.input'
 import { NotFoundException } from '@nestjs/common'
+import { errorMessages } from '../../auth/constants'
 
 export class UserService {
   constructor(
@@ -16,7 +16,7 @@ export class UserService {
       const user = await this.studentRepository.findOne({ where: { tax_id } })
       if (user) return new CreateUserDTO(user)
     } catch (error) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException(errorMessages.userNotFoundMessage)
     }
   }
 }

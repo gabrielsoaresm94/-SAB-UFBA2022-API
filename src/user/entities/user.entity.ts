@@ -19,8 +19,6 @@ export class UserEntity {
   }
 }
 
-export function toUserResponseDTO(
-  user: UserEntity
-): ResponseUserDTO{
-return new ResponseUserDTO(user.id, user.tax_id, user.name, user.role)
+export function toUserResponseDTO(user: UserEntity): ResponseUserDTO {
+  return new ResponseUserDTO(user.id, user.tax_id, user.name, user.role)
 }

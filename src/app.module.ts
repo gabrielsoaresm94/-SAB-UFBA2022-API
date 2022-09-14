@@ -15,9 +15,9 @@ require('dotenv')
     ConfigModule.forRoot(),
     StudentsModule,
     EmailModule,
-    ArticleModule, 
+    ArticleModule,
     AuthModule,
-    ProfileModule,
+    ProfileModule
   ],
   controllers: [],
   providers: []

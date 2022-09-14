@@ -1,12 +1,7 @@
 import { ResponseArticleDTO } from '../../article/dto/response-article.dto'
 
 export class ResponseUserDTO {
-  constructor(
-    id: number,
-    tax_id: string,
-    name: string,
-    role: string,
-  ) {
+  constructor(id: number, tax_id: string, name: string, role: string) {
     this.id = id
     this.tax_id = tax_id
     this.name = name
@@ -20,5 +15,4 @@ export class ResponseUserDTO {
   readonly name: string
 
   readonly role: string
-
 }
