@@ -8,8 +8,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
+        ssl: configService.get('DEVELOPMENT_MODE') === true,
+        extra: {
+          ssl:
+            configService.get('DEVELOPMENT_MODE') === true
+              ? {
+                  rejectUnauthorized: false
+                }
+              : null
+        },
         type: 'postgres',
-        host: 'localhost',
+        URL: configService.get('DATABASE_URL'),
+        host: configService.get('DATABASE_HOST'),
         port: configService.get('DATABASE_PORT'),
         username: configService.get('DATABASE_USERNAME'),
         password: configService.get('DATABASE_PASSWORD'),
