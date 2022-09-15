@@ -6,7 +6,7 @@ import { EmailModule } from './email/email.module'
 import { ArticleModule } from './article/article.module'
 import { AuthModule } from './auth/auth.module'
 import { ProfileModule } from './profile/profile.module'
-import { TeacherModule } from './teacher/teacher.module'
+import { AdvisorModule } from './advisor/advisor.module'
 
 require('dotenv')
 
@@ -19,7 +19,7 @@ require('dotenv')
     ArticleModule,
     AuthModule,
     ProfileModule,
-    TeacherModule
+    AdvisorModule
   ],
   controllers: [],
   providers: []
