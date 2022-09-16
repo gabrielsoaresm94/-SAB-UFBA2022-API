@@ -27,7 +27,7 @@ export class AdvisorService {
       })
       await this.advisorRepository.save(advisor)
     } catch (error) {
-      throw new BadRequestException(error.message)
+      throw new BadRequestException("Can't create advisor")
     }
   }
 
@@ -52,7 +52,10 @@ export class AdvisorService {
   //   return `This action updates a #${id} advisor`
   // }
 
-  remove(id: number) {
-    return `This action removes a #${id} advisor`
+  async remove(id: number) {
+    const removed = await this.advisorRepository.delete(id)
+    if (removed.affected === 1) return
+
+    throw new NotFoundException('Advisor not found')
   }
 }

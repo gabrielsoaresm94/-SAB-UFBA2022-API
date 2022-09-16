@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { CreateAdvisorDto } from '../dto/create-advisor.dto'
+import { ResponseAdvisorDto } from '../dto/response-advisor.dto'
 
 @Entity('advisor')
 export class Advisor {
@@ -25,8 +25,9 @@ export class Advisor {
   role: string
 }
 
-export function toAdvisorDTO(advisor: Advisor): CreateAdvisorDto {
-  return new CreateAdvisorDto(
+export function toAdvisorDTO(advisor: Advisor): ResponseAdvisorDto {
+  return new ResponseAdvisorDto(
+    advisor.id,
     advisor.tax_id,
     advisor.name,
     advisor.email,
