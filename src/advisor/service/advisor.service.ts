@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateAdvisorDto } from '../dto/create-advisor.dto'
-import { UpdateAdvisorDto } from '../dto/update-advisor.dto'
 import { Advisor, toAdvisorDTO } from '../entities/advisor.entity'
 import { hashPassword } from '../../utils/bcrypt'
 import { ResponseAdvisorDto } from '../dto/response-advisor.dto'

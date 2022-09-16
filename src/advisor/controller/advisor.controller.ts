@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete
-} from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { AdvisorService } from '../service/advisor.service'
 import { CreateAdvisorDto } from '../dto/create-advisor.dto'
 import { ResponseAdvisorDto } from '../dto/response-advisor.dto'
