@@ -1,16 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete
-} from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { CreateArticleDto } from '../dto/create-article.dto'
-import { UpdateArticleDto } from '../dto/update-article.dto'
-
 @Controller('v1/article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
@@ -30,10 +20,10 @@ export class ArticleController {
     return this.articleService.findOne(+id)
   }
 
-  @Patch('/update/:id')
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articleService.update(+id, updateArticleDto)
-  }
+  // @Patch('/update/:id')
+  // update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
+  //   return this.articleService.update(+id, updateArticleDto)
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

@@ -9,7 +9,7 @@ create TABLE advisor(
   email TEXT NOT NULL UNIQUE,
   phone_number VARCHAR(11) NOT NULL,
   password TEXT NOT NULL,
-  role TEXT NOT NULL DEFAULT 'advisor'
+  role TEXT NOT NULL DEFAULT 'ADVISOR'
 );
 
 CREATE TABLE student (
