@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { BadRequestException } from '@nestjs/common/exceptions'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
@@ -9,11 +10,15 @@ import { Scholarship } from '../entities/scholarship.entity'
 export class ScholarshipService {
   constructor(
     @InjectRepository(Scholarship)
-    private studentRepository: Repository<Scholarship>
+    private scholarshipRepository: Repository<Scholarship>
   ) {}
 
-  create(createScholarshipDto: CreateScholarshipDto) {
-    return 'This action adds a new scholarship'
+  async create(createScholarshipDto: CreateScholarshipDto) {
+    try {
+      return await this.scholarshipRepository.save(createScholarshipDto)
+    } catch (error) {
+      return new BadRequestException('Error to create scholarship')
+    }
   }
 
   findAll() {
