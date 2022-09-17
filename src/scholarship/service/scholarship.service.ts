@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { BadRequestException } from '@nestjs/common/exceptions'
+import {
+  BadRequestException,
+  NotFoundException
+} from '@nestjs/common/exceptions'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
 import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
-import { UpdateScholarshipDto } from '../dto/update-scholarship.dto'
 import { Scholarship, toScholarshipDTO } from '../entities/scholarship.entity'
 
 @Injectable()
@@ -28,19 +30,20 @@ export class ScholarshipService {
         student_id: true
       }
     })
-
     return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} scholarship`
-  }
+  async findOneById(id: number): Promise<ResponseScholarshipDto> {
+    const scholarship = await this.scholarshipRepository.find({
+      where: { id: id },
+      relations: {
+        student_id: true
+      }
+    })
+    if (!scholarship || scholarship.length === 0) {
+      throw new NotFoundException('Scholarship not found')
+    }
 
-  update(id: number, updateScholarshipDto: UpdateScholarshipDto) {
-    return `This action updates a #${id} scholarship`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} scholarship`
+    return toScholarshipDTO(scholarship[0])
   }
 }

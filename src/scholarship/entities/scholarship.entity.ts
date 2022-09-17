@@ -39,6 +39,8 @@ export class Scholarship {
 
   @Column({ nullable: false })
   model: string
+
+  student: StudentEntity
 }
 
 export function toScholarshipDTO(

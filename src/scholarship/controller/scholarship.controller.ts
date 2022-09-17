@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete
-} from '@nestjs/common'
+import { Controller, Get, Post, Body, Param } from '@nestjs/common'
 import { ScholarshipService } from '../service/scholarship.service'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
-import { UpdateScholarshipDto } from '../dto/update-scholarship.dto'
 
 @Controller('v1/scholarship')
 export class ScholarshipController {
@@ -27,19 +18,6 @@ export class ScholarshipController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.scholarshipService.findOne(+id)
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateScholarshipDto: UpdateScholarshipDto
-  ) {
-    return this.scholarshipService.update(+id, updateScholarshipDto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.scholarshipService.remove(+id)
+    return this.scholarshipService.findOneById(+id)
   }
 }

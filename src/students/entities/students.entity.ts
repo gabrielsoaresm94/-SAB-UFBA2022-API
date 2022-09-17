@@ -45,7 +45,7 @@ export class StudentEntity {
   @Column({ length: 11, nullable: false })
   phone_number: string
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   password: string
 
   @Column({ nullable: true, default: 'STUDENT' })
