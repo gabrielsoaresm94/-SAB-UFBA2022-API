@@ -28,6 +28,7 @@ export class ScholarshipService {
         student_id: true
       }
     })
+
     return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
 

@@ -1,7 +1,8 @@
 export class ResponseScholarshipDto {
   constructor(
     id: number,
-    student_id: number,
+    student: number,
+    agency_id: number,
     scholarship_start_at: Date,
     scholarship_ends_at: Date,
     extension_ends_at: Date,
@@ -9,7 +10,9 @@ export class ResponseScholarshipDto {
     active: boolean,
     model: string
   ) {
-    this.student_id = student_id
+    this.id = id
+    this.student = student
+    this.agency_id = agency_id
     this.scholarship_start_at = scholarship_start_at
     this.scholarship_ends_at = scholarship_ends_at
     this.extension_ends_at = extension_ends_at
@@ -17,8 +20,8 @@ export class ResponseScholarshipDto {
     this.active = active
     this.model = model
   }
-
-  readonly student_id: number
+  readonly id: number
+  readonly student: number
   readonly agency_id: number
   readonly scholarship_start_at: Date
   readonly scholarship_ends_at: Date
