@@ -2,8 +2,16 @@ import {
   ArticleEntity,
   toArticleResponseDTO
 } from '../../article/entities/article.entity'
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 import { ResponseStudentDTO } from '../model/student.response.dto'
+import { Scholarship } from '../../scholarship/entities/scholarship.entity'
 
 @Entity('student')
 export class StudentEntity {
@@ -37,7 +45,7 @@ export class StudentEntity {
   @Column({ length: 11, nullable: false })
   phone_number: string
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   password: string
 
   @Column({ nullable: true, default: 'STUDENT' })
@@ -45,6 +53,10 @@ export class StudentEntity {
 
   @OneToMany(() => ArticleEntity, (article) => article.student)
   articles: ArticleEntity[]
+
+  @OneToOne(() => Scholarship)
+  @JoinColumn()
+  scolarship: Scholarship
 }
 
 export function toStudentResponseDTO(
