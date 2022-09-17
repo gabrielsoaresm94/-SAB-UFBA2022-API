@@ -3,8 +3,9 @@ import { BadRequestException } from '@nestjs/common/exceptions'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
+import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
 import { UpdateScholarshipDto } from '../dto/update-scholarship.dto'
-import { Scholarship } from '../entities/scholarship.entity'
+import { Scholarship, toScholarshipDTO } from '../entities/scholarship.entity'
 
 @Injectable()
 export class ScholarshipService {
@@ -17,12 +18,17 @@ export class ScholarshipService {
     try {
       return await this.scholarshipRepository.save(createScholarshipDto)
     } catch (error) {
-      return new BadRequestException('Error to create scholarship')
+      return new BadRequestException(error.message)
     }
   }
 
-  findAll() {
-    return `This action returns all scholarship`
+  async findAll(): Promise<ResponseScholarshipDto[]> {
+    const scholarships: Scholarship[] = await this.scholarshipRepository.find({
+      relations: {
+        student_id: true
+      }
+    })
+    return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
 
   findOne(id: number) {

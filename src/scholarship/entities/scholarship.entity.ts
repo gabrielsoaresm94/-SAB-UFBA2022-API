@@ -3,9 +3,11 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
+import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
 
 @Entity('scholarship')
 export class Scholarship {
@@ -14,7 +16,9 @@ export class Scholarship {
 
   @Column({ nullable: false })
   @OneToOne(() => StudentEntity)
-  @JoinColumn()
+  @JoinColumn({
+    name: 'student_id'
+  })
   student_id: number
 
   @Column({ nullable: false })
@@ -38,4 +42,19 @@ export class Scholarship {
 
   @Column({ nullable: false })
   model: string
+}
+
+export function toScholarshipDTO(
+  scholarship: Scholarship
+): ResponseScholarshipDto {
+  return new ResponseScholarshipDto(
+    scholarship.id,
+    scholarship.student_id,
+    scholarship.scholarship_start_at,
+    scholarship.scholarship_ends_at,
+    scholarship.extension_ends_at,
+    scholarship.salary,
+    scholarship.active,
+    scholarship.model
+  )
 }
