@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module'
 import { ProfileModule } from './profile/profile.module'
 import { AdvisorModule } from './advisor/advisor.module'
 import { ScholarshipModule } from './scholarship/scholarship.module'
+import { PasswordRecoveryModule } from './password-recovery/password-recovery.module'
 
 require('dotenv')
 
@@ -20,6 +21,7 @@ require('dotenv')
     ArticleModule,
     AuthModule,
     ProfileModule,
+    PasswordRecoveryModule,
     AdvisorModule,
     ScholarshipModule
   ],
