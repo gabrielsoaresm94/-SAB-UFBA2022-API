@@ -51,6 +51,11 @@ export class AdvisorService {
   //   return `This action updates a #${id} advisor`
   // }
 
+  async updatePassword(email: string, password: string) {
+    const passwordHash = await hashPassword(password)
+    await this.advisorRepository.update({ email }, { password: passwordHash })
+  }
+
   async remove(id: number) {
     const removed = await this.advisorRepository.delete(id)
     if (removed.affected === 1) return
