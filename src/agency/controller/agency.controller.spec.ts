@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ArticleController } from './agency.controller'
-import { ArticleService } from '../service/agency.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { ArticleEntity } from '../entities/agency.entity'
+import { AgencyEntity } from '../entities/agency.entity'
+import { AgencyService } from '../service/agency.service'
+import { AgencyController } from './agency.controller'
 
-describe('ArticleController', () => {
-  let controller: ArticleController
+describe('AgencyController', () => {
+  let controller: AgencyController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ArticleController],
+      controllers: [AgencyController],
       providers: [
-        ArticleService,
-        { provide: getRepositoryToken(ArticleEntity), useValue: {} }
+        AgencyService,
+        { provide: getRepositoryToken(AgencyEntity), useValue: {} }
       ]
     }).compile()
 
-    controller = module.get<ArticleController>(ArticleController)
+    controller = module.get<AgencyController>(AgencyController)
   })
 
   it('should be defined', () => {
