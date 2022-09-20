@@ -81,6 +81,11 @@ export class StudentsService {
     }
   }
 
+  async updatePassword(email: string, password: string) {
+    const passwordHash = await hashPassword(password)
+    await this.studentRepository.update({ email }, { password: passwordHash })
+  }
+
   async updateStudent(student: any) {
     //TODO: IMPLEMENTS
     return student // TODO : update student
