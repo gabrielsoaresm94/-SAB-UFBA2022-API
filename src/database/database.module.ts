@@ -8,6 +8,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
+        autoLoadEntities: true,
+        type: 'postgres',
+        host: configService.get('HOST'),
+        port: configService.get('DATABASE_PORT'),
+        username: configService.get('DATABASE_USERNAME'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'),
         ssl: configService.get('MODE') === 'prod',
         extra: {
           ssl:
@@ -15,15 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
               ? { rejectUnauthorized: false }
               : null
         },
-        type: 'postgres',
-        URL: configService.get('DATABASE_URL'),
-        host: configService.get('DATABASE_HOST'),
-        port: configService.get('DATABASE_PORT'),
-        username: configService.get('DATABASE_USERNAME'),
-        password: configService.get('DATABASE_PASSWORD'),
-        database: configService.get('DATABASE_NAME'),
-        entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
-        synchronize: true
+        entities: [`${__dirname}/../**/*.entity{.ts,.js}`]
       })
     })
   ]
