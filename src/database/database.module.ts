@@ -15,6 +15,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
         username: configService.get('DATABASE_USERNAME'),
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE_NAME'),
+        ssl: configService.get('MODE') === 'prod',
+        extra: {
+          ssl:
+            configService.get('MODE') === 'prod'
+              ? { rejectUnauthorized: false }
+              : null
+        },
         entities: [`${__dirname}/../**/*.entity{.ts,.js}`]
       })
     })
