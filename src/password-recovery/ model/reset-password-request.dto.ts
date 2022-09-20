@@ -1,11 +1,20 @@
-export class ResetPasswordRequestDto {
-  constructor(token: string, password, newPassword, confirmPassword) {
-    this.token = token
-    this.password = newPassword
-    this.confirmPassword = confirmPassword
-  }
+import { IsNotEmpty, IsString } from 'class-validator'
 
-  readonly token: string
-  readonly password: string
-  readonly confirmPassword: string
+export class ResetPasswordRequestDto
+  implements Readonly<ResetPasswordRequestDto>
+{
+  public constructor(init?: Partial<ResetPasswordRequestDto>) {
+    Object.assign(this, init)
+  }
+  @IsString()
+  @IsNotEmpty()
+  token: string
+
+  @IsString()
+  @IsNotEmpty()
+  password: string
+
+  @IsString()
+  @IsNotEmpty()
+  confirmPassword: string
 }

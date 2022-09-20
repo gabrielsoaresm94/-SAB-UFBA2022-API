@@ -1,7 +1,11 @@
-export class PasswordRecoveryRequestDto {
-  constructor(email: string) {
-    this.email = email
-  }
+import { IsEmail } from 'class-validator'
 
-  readonly email: string
+export class PasswordRecoveryRequestDto
+  implements Readonly<PasswordRecoveryRequestDto>
+{
+  public constructor(init?: Partial<PasswordRecoveryRequestDto>) {
+    Object.assign(this, init)
+  }
+  @IsEmail()
+  email: string
 }
