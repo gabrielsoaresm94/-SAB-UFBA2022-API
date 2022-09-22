@@ -54,3 +54,11 @@ CREATE TABLE article(
   doi_link TEXT NOT NULL
 );
 
+CREATE TABLE admin(
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  tax_id VARCHAR(14) NOT NULL UNIQUE,
+  email TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'ADMIN'
+);

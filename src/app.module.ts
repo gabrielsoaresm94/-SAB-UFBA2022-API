@@ -9,6 +9,7 @@ import { ProfileModule } from './profile/profile.module'
 import { AdvisorModule } from './advisor/advisor.module'
 import { ScholarshipModule } from './scholarship/scholarship.module'
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module'
+import { AdminModule } from './admin/admin.module';
 
 require('dotenv')
 
@@ -23,7 +24,8 @@ require('dotenv')
     ProfileModule,
     PasswordRecoveryModule,
     AdvisorModule,
-    ScholarshipModule
+    ScholarshipModule,
+    AdminModule
   ],
   controllers: [],
   providers: []
