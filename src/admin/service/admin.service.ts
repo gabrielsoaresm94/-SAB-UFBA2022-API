@@ -13,7 +13,7 @@ export class AdminService {
   ) {}
 
   async create(createAdminDto: CreateAdminDto) {
-    return await this.adminRepository.create(createAdminDto)
+    return await this.adminRepository.save(createAdminDto)
   }
 
   findAll() {
