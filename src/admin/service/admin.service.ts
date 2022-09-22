@@ -1,5 +1,10 @@
-import { Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { hashPassword } from 'src/utils/bcrypt'
 import { Repository } from 'typeorm'
 import { CreateAdminDto } from '../dto/create-admin.dto'
 import { UpdateAdminDto } from '../dto/update-admin.dto'
@@ -13,11 +18,20 @@ export class AdminService {
   ) {}
 
   async create(createAdminDto: CreateAdminDto) {
-    return await this.adminRepository.save(createAdminDto)
+    try {
+      const passwordHash = await hashPassword(createAdminDto.password)
+      const newAdmin = this.adminRepository.create({
+        ...createAdminDto,
+        password: passwordHash
+      })
+      await this.adminRepository.save(newAdmin)
+    } catch (error) {
+      throw new BadRequestException('Error to create admin')
+    }
   }
 
-  findAll() {
-    return `This action returns all admin`
+  async findAll() {
+    return await this.adminRepository.find()
   }
 
   findOne(id: number) {
@@ -28,7 +42,10 @@ export class AdminService {
     return `This action updates a #${id} admin`
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`
+  async remove(id: number) {
+    const removed = await this.adminRepository.delete(id)
+    if (removed.affected === 1) return
+
+    throw new NotFoundException('Admin not found')
   }
 }
