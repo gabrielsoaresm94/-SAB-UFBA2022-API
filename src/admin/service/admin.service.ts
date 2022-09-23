@@ -34,8 +34,8 @@ export class AdminService {
   async findAll(): Promise<ResponseAdminDto[]> {
     try {
       const admins = await this.adminRepository.find()
-    return admins.map((admin) => toAdminResponseDto(admin))
-    } catch(error) {
+      return admins.map((admin) => toAdminResponseDto(admin))
+    } catch (error) {
       throw new BadRequestException('Error to find admins')
     }
   }
@@ -43,10 +43,10 @@ export class AdminService {
   async findOne(id: number) {
     try {
       const admin = await this.adminRepository.findOneBy({ id: id })
-    if (!admin) throw new NotFoundException('Admin not found')
+      if (!admin) throw new NotFoundException('Admin not found')
 
-    return toAdminResponseDto(admin)
-    } catch(error) {
+      return toAdminResponseDto(admin)
+    } catch (error) {
       throw new BadRequestException('Error to find admin')
     }
   }
@@ -54,19 +54,19 @@ export class AdminService {
   async update(id: number, updateAdminDto: UpdateAdminDto) {
     try {
       const admin = await this.adminRepository.findOneBy({ id: id })
-    if (!admin) throw new NotFoundException('Admin not found')
+      if (!admin) throw new NotFoundException('Admin not found')
 
-    const updated = await this.adminRepository.save({
-      id: admin.id,
-      name: updateAdminDto.name || admin.name,
-      tax_id: admin.tax_id,
-      email: updateAdminDto.email || admin.email,
-      password: updateAdminDto.password
-        ? await hashPassword(updateAdminDto.password)
-        : admin.password
-    })
+      const updated = await this.adminRepository.save({
+        id: admin.id,
+        name: updateAdminDto.name || admin.name,
+        tax_id: admin.tax_id,
+        email: updateAdminDto.email || admin.email,
+        password: updateAdminDto.password
+          ? await hashPassword(updateAdminDto.password)
+          : admin.password
+      })
 
-    return toAdminResponseDto(updated)
+      return toAdminResponseDto(updated)
     } catch (error) {
       throw new BadRequestException('Error to update admin')
     }
@@ -75,9 +75,9 @@ export class AdminService {
   async remove(id: number) {
     try {
       const removed = await this.adminRepository.delete(id)
-    if (removed.affected === 1) return
+      if (removed.affected === 1) return
 
-    throw new NotFoundException('Admin not found')
+      throw new NotFoundException('Admin not found')
     } catch (error) {
       throw new BadRequestException('Error to remove admin')
     }
