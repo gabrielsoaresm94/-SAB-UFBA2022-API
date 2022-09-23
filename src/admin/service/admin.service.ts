@@ -32,19 +32,28 @@ export class AdminService {
   }
 
   async findAll(): Promise<ResponseAdminDto[]> {
-    const admins = await this.adminRepository.find()
+    try {
+      const admins = await this.adminRepository.find()
     return admins.map((admin) => toAdminResponseDto(admin))
+    } catch(error) {
+      throw new BadRequestException('Error to find admins')
+    }
   }
 
   async findOne(id: number) {
-    const admin = await this.adminRepository.findOneBy({ id: id })
+    try {
+      const admin = await this.adminRepository.findOneBy({ id: id })
     if (!admin) throw new NotFoundException('Admin not found')
 
     return toAdminResponseDto(admin)
+    } catch(error) {
+      throw new BadRequestException('Error to find admin')
+    }
   }
 
   async update(id: number, updateAdminDto: UpdateAdminDto) {
-    const admin = await this.adminRepository.findOneBy({ id: id })
+    try {
+      const admin = await this.adminRepository.findOneBy({ id: id })
     if (!admin) throw new NotFoundException('Admin not found')
 
     const updated = await this.adminRepository.save({
@@ -58,12 +67,19 @@ export class AdminService {
     })
 
     return toAdminResponseDto(updated)
+    } catch (error) {
+      throw new BadRequestException('Error to update admin')
+    }
   }
 
   async remove(id: number) {
-    const removed = await this.adminRepository.delete(id)
+    try {
+      const removed = await this.adminRepository.delete(id)
     if (removed.affected === 1) return
 
     throw new NotFoundException('Admin not found')
+    } catch (error) {
+      throw new BadRequestException('Error to remove admin')
+    }
   }
 }
