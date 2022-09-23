@@ -43,8 +43,21 @@ export class AdminService {
     return toAdminResponseDto(admin)
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`
+  async update(id: number, updateAdminDto: UpdateAdminDto) {
+    const admin = await this.adminRepository.findOneBy({ id: id })
+    if (!admin) throw new NotFoundException('Admin not found')
+
+    const updated = await this.adminRepository.save({
+      id: admin.id,
+      name: updateAdminDto.name || admin.name,
+      tax_id: admin.tax_id,
+      email: updateAdminDto.email || admin.email,
+      password: updateAdminDto.password
+        ? await hashPassword(updateAdminDto.password)
+        : admin.password
+    })
+
+    return toAdminResponseDto(updated)
   }
 
   async remove(id: number) {
