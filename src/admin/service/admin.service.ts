@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { hashPassword } from 'src/utils/bcrypt'
 import { Repository } from 'typeorm'
 import { CreateAdminDto } from '../dto/create-admin.dto'
-import { toAdminResponseDto } from '../dto/response-admin.dto'
+import { ResponseAdminDto, toAdminResponseDto } from '../dto/response-admin.dto'
 import { UpdateAdminDto } from '../dto/update-admin.dto'
 import { Admin } from '../entities/admin.entity'
 
@@ -31,8 +31,9 @@ export class AdminService {
     }
   }
 
-  async findAll() {
-    return await this.adminRepository.find()
+  async findAll(): Promise<ResponseAdminDto[]> {
+    const admins = await this.adminRepository.find()
+    return admins.map((admin) => toAdminResponseDto(admin))
   }
 
   async findOne(id: number) {
