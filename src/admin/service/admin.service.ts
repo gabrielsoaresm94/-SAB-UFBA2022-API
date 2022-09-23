@@ -4,7 +4,7 @@ import {
   NotFoundException
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { hashPassword } from 'src/utils/bcrypt'
+import { hashPassword } from '../../utils/bcrypt'
 import { Repository } from 'typeorm'
 import { CreateAdminDto } from '../dto/create-admin.dto'
 import { ResponseAdminDto, toAdminResponseDto } from '../dto/response-admin.dto'
