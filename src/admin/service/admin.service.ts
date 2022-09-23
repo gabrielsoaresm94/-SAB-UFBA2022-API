@@ -34,8 +34,11 @@ export class AdminService {
     return await this.adminRepository.find()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`
+  async findOne(id: number) {
+    const admin = await this.adminRepository.findOneBy({ id: id })
+    if (!admin) throw new NotFoundException('Admin not found')
+
+    return admin
   }
 
   update(id: number, updateAdminDto: UpdateAdminDto) {
