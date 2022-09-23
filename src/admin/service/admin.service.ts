@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { hashPassword } from 'src/utils/bcrypt'
 import { Repository } from 'typeorm'
 import { CreateAdminDto } from '../dto/create-admin.dto'
+import { toAdminResponseDto } from '../dto/response-admin.dto'
 import { UpdateAdminDto } from '../dto/update-admin.dto'
 import { Admin } from '../entities/admin.entity'
 
@@ -38,7 +39,7 @@ export class AdminService {
     const admin = await this.adminRepository.findOneBy({ id: id })
     if (!admin) throw new NotFoundException('Admin not found')
 
-    return admin
+    return toAdminResponseDto(admin)
   }
 
   update(id: number, updateAdminDto: UpdateAdminDto) {
