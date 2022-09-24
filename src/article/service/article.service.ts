@@ -1,15 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { StudentEntity } from '../../students/entities/students.entity'
 import { Repository } from 'typeorm'
 import { CreateArticleDto } from '../dto/create-article.dto'
 import { ResponseArticleDTO } from '../dto/response-article.dto'
 import { ArticleEntity, toArticleResponseDTO } from '../entities/article.entity'
+import { StudentsService } from '../../students/service/students.service'
+const PDFKit = require('pdfkit')
+const fs = require('fs')
 
 @Injectable()
 export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity)
-    private articleRepository: Repository<ArticleEntity>
+    private articleRepository: Repository<ArticleEntity>,
+    private studentService: StudentsService
   ) {}
 
   async create(createArticleDto: CreateArticleDto) {
@@ -37,5 +42,17 @@ export class ArticleService {
       throw new NotFoundException('Article not found')
     }
     return 'Article deleted'
+  }
+
+  async generatePDF() {
+    const doc = new PDFKit()
+    doc
+      .fontSize(25)
+      .text('Relatório de bolsas alocadas', 100, 80, { align: 'center' })
+    doc.pipe(fs.createWriteStream('relatorio.pdf'))
+    const student = await this.studentService.findById(1)
+    doc.text('Nome do aluno: ' + student.name)
+    
+    doc.end()
   }
 }
