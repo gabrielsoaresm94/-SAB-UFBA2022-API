@@ -1,6 +1,10 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { CreateArticleDto } from '../dto/create-article.dto'
+const parser = require('xml2json')
+const fs = require('fs')
+const iconv = require('iconv-lite')
+
 @Controller('v1/article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
@@ -28,5 +32,18 @@ export class ArticleController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.articleService.remove(+id)
+  }
+
+  @Get('/xml')
+  xml() {
+    const input = fs.readFileSync('src/article/controller/curriculo.xml', {
+      ecoding: 'binary'
+    })
+    const output = iconv.decode(input, 'ISO-8859-1')
+    console.log(JSON.stringify(output))
+    // fs.readFile('./curriculo.xml', function (err, data) {
+    //   const json = parser.toJson(data)
+    //   console.log('to json ->', JSON.stringify(json))
+    // })
   }
 }
