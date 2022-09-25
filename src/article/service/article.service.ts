@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { StudentEntity } from '../../students/entities/students.entity'
 import { Repository } from 'typeorm'
 import { CreateArticleDto } from '../dto/create-article.dto'
 import { ResponseArticleDTO } from '../dto/response-article.dto'
@@ -49,10 +49,31 @@ export class ArticleService {
     doc
       .fontSize(25)
       .text('Relatório de bolsas alocadas', 100, 80, { align: 'center' })
+    const students = await this.studentService.findAllStudents()
+    for (const student of students) {
+      doc.text('Nome do aluno: ' + student.name).fontSize(16)
+      doc.text('Matrícula: ' + student.enrolment_number).fontSize(16)
+      doc.text('Curso: ' + student.course).fontSize(16)
+      doc.text('Email: ' + student.email).fontSize(16)
+      doc
+        .text('Data de início no PGCOMP: ' + student.enrollment_date_pgcomp)
+        .fontSize(16)
+      doc.text('Artigos publicados:').fontSize(16)
+      doc.moveDown()
+      for (let i = 0; i < student.articles.length; i++) {
+        doc.text('Artigo #' + (i + 1)).fontSize(16)
+        doc.text('Título: ' + student.articles[i].title).fontSize(12)
+        doc
+          .text('Data de publicação: ' + student.articles[i].publication_date)
+          .fontSize(12)
+        doc.text('Doi Link: ' + student.articles[i].doi_link).fontSize(12)
+        doc
+          .text('Local de publicação: ' + student.articles[i].publication_place)
+          .fontSize(12)
+        doc.moveDown()
+      }
+    }
     doc.pipe(fs.createWriteStream('relatorio.pdf'))
-    const student = await this.studentService.findById(1)
-    doc.text('Nome do aluno: ' + student.name)
-    
     doc.end()
   }
 }
