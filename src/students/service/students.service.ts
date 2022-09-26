@@ -155,8 +155,10 @@ export class StudentsService {
     await this.studentRepository.update({ email }, { password: passwordHash })
   }
 
-  async updateStudent(student: any) {
-    //TODO: IMPLEMENTS
-    return student // TODO : update student
+  async updateStudent(student: CreateStudentDTO) {
+    await this.studentRepository.update(
+      { tax_id: student.tax_id },
+      { ...student }
+    )
   }
 }
