@@ -1,8 +1,8 @@
 import { IsNumber, IsString } from 'class-validator'
-import { StudentEntity } from '../../students/entities/students.entity'
+import { User } from '../interface/user.interface'
 
 export class CreateUserDTO {
-  constructor(user: StudentEntity) {
+  constructor(user: User) {
     this.id = user.id
     this.tax_id = user.tax_id
     this.name = user.name
