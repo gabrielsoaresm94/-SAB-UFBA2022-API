@@ -2,7 +2,7 @@ import { User } from '../../user/interface/user.interface'
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('admin')
-export class Admin implements User{
+export class Admin implements User {
   @PrimaryGeneratedColumn() id: number
   @Column({ nullable: false }) name: string
   @Column({ length: 14, nullable: false, unique: true }) tax_id: string

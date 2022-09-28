@@ -7,7 +7,11 @@ import { StudentsModule } from '../students/students.module'
 import { UserService } from './service/user.service'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([StudentEntity, Advisor]), StudentsModule, AdvisorModule],
+  imports: [
+    TypeOrmModule.forFeature([StudentEntity, Advisor]),
+    StudentsModule,
+    AdvisorModule
+  ],
   providers: [UserService],
   exports: [UserService]
 })
