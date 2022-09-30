@@ -1,8 +1,9 @@
+import { User } from '../../user/interface/user.interface'
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { ResponseAdvisorDto } from '../dto/response-advisor.dto'
 
 @Entity('advisor')
-export class Advisor {
+export class Advisor implements User {
   @PrimaryGeneratedColumn()
   id: number
 

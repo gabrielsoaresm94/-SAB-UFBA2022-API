@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { jwtConstants } from '../constants'
 import { CreateStudentDTO } from '../../students/model/student.dto.input'
 import { NotFoundException } from '@nestjs/common'
+import { Advisor } from '../../advisor/entities/advisor.entity'
 
 describe('User Login Service', () => {
   let authService: AuthService
@@ -24,6 +25,7 @@ describe('User Login Service', () => {
       providers: [
         UserService,
         AuthService,
+        {provide: getRepositoryToken(Advisor),useValue: mockRepository},
         {
           provide: getRepositoryToken(StudentEntity),
           useValue: mockRepository

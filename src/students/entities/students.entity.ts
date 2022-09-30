@@ -12,9 +12,10 @@ import {
 } from 'typeorm'
 import { ResponseStudentDTO } from '../model/student.response.dto'
 import { Scholarship } from '../../scholarship/entities/scholarship.entity'
+import { User } from '../../user/interface/user.interface'
 
 @Entity('student')
-export class StudentEntity {
+export class StudentEntity implements User {
   @PrimaryGeneratedColumn()
   id: number
 
