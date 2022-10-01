@@ -1,4 +1,5 @@
 import { IsNumber, IsString } from 'class-validator'
+import { Role } from '../../roles/enum/role.enum'
 import { User } from '../interface/user.interface'
 
 export class CreateUserDTO {
@@ -6,7 +7,7 @@ export class CreateUserDTO {
     this.id = user.id
     this.tax_id = user.tax_id
     this.name = user.name
-    this.role = user.role
+    this.role = Role[user.role]
     this.password = user.password
   }
 
@@ -23,5 +24,5 @@ export class CreateUserDTO {
   readonly id: number
 
   @IsString()
-  readonly role: string
+  readonly role: Role
 }

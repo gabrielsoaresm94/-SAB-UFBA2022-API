@@ -1,3 +1,4 @@
+import { Role } from '../../roles/enum/role.enum'
 import { StudentEntity } from 'src/students/entities/students.entity'
 import { ResponseUserDTO } from '../model/user.response.dto'
 
@@ -7,13 +8,13 @@ export class UserEntity {
   name: string
   email: string
   password: string
-  role: string
+  role: Role
 
   constructor(user: StudentEntity) {
     this.id = user.id
     this.tax_id = user.tax_id
     this.name = user.name
-    this.role = user.role
+    this.role = Role[user.role]
     this.password = user.password
     this.email = user.email
   }
