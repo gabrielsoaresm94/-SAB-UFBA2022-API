@@ -18,8 +18,17 @@ export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Get('/list/all')
-  async findAllStudents() {
-    return await this.studentsService.findAllStudents()
+  async findAllStudents(
+    // CRIAR ENDPOINT PARA VERIFICAR ISSO, POIS QUEBRA TUDO
+    // mudando os parametros do service, quebra o resto dos lugares que chamam o findall
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10
+  ) {
+    limit = limit > 100 ? 100 : limit
+    return await this.studentsService.findAllStudents({
+      page,
+      limit
+    })
   }
 
   @Get('/paginate')

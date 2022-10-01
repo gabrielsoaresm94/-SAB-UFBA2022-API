@@ -14,8 +14,9 @@ import { hashPassword } from '../../utils/bcrypt'
 import { ResponseStudentDTO } from '../model/student.response.dto'
 import {
   paginate,
+  IPaginationOptions,
   Pagination,
-  IPaginationOptions
+  IPaginationMeta
 } from 'nestjs-typeorm-paginate'
 import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
@@ -27,19 +28,19 @@ export class StudentsService {
     private studentRepository: Repository<StudentEntity>
   ) {}
 
-  async findAllStudents(): Promise<ResponseStudentDTO[]> {
-    const students: StudentEntity[] = await this.studentRepository.find({
-      relations: ['articles']
-    })
-    return students.map((student) => toStudentResponseDTO(student))
-  }
+  async findAllStudents(options: IPaginationOptions) {
+    // const students: StudentEntity[] = await this.studentRepository.find({
+    //   relations: ['articles']
+    // })
+    // return students.map((student) => toStudentResponseDTO(student))
 
-  async paginate(options: IPaginationOptions) {
     const studentsPaginate = paginate<StudentEntity>(
       this.studentRepository,
-      options
+      options,
+      { relations: ['articles'] }
     )
     const items = (await studentsPaginate).items
+    const itemsDto = await items.map((student) => toStudentResponseDTO(student))
     const meta = (await studentsPaginate).meta
     const metaDto = new PageMetaDto(
       meta.itemCount,
@@ -49,7 +50,29 @@ export class StudentsService {
       meta.currentPage
     )
 
-    const p = new PageDto(items, metaDto)
+    const p = new PageDto(itemsDto, metaDto)
+    console.log(p)
+    return p
+  }
+
+  async paginate(options: IPaginationOptions) {
+    const studentsPaginate = paginate<StudentEntity>(
+      this.studentRepository,
+      options,
+      { relations: ['articles'] }
+    )
+    const items = (await studentsPaginate).items
+    const itemsDto = await items.map((student) => toStudentResponseDTO(student))
+    const meta = (await studentsPaginate).meta
+    const metaDto = new PageMetaDto(
+      meta.itemCount,
+      meta.itemsPerPage,
+      meta.totalItems,
+      meta.totalPages,
+      meta.currentPage
+    )
+
+    const p = new PageDto(itemsDto, metaDto)
     console.log(p)
     return p
   }

@@ -14,7 +14,7 @@ export class ResponseStudentDTO {
     defense_prediction: Date,
     phone_number: string,
     role: string,
-    articles: ResponseArticleDTO[]
+    articles?: ResponseArticleDTO[]
   ) {
     this.id = id
     this.tax_id = tax_id
