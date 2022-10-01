@@ -6,7 +6,8 @@ import {
   IsDate,
   IsNumber,
   Length,
-  Matches
+  Matches,
+  IsOptional
 } from 'class-validator'
 
 const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
@@ -75,4 +76,9 @@ export class CreateStudentDTO {
 
   @IsString()
   readonly role: string
+
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  readonly defense_prediction: Date
 }

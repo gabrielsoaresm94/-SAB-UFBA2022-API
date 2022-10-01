@@ -76,6 +76,7 @@ export function toStudentResponseDTO(
     student.link_lattes,
     student.advisor_id,
     student.enrollment_date_pgcomp,
+    student.defense_prediction,
     student.phone_number,
     student.role,
     student.articles.map((article) => toArticleResponseDTO(article))
