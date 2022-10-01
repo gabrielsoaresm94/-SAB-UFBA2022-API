@@ -37,8 +37,13 @@ export class StudentsService {
       this.studentRepository,
       options
     )
-    console.log(typeof studentsPaginate)
-    return studentsPaginate
+
+    return new Pagination<ResponseStudentDTO>(
+      (await studentsPaginate).items.map((student) =>
+        toStudentResponseDTO(student)
+      )
+
+    )
   }
 
   async findById(id: number) {
