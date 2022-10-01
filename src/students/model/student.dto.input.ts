@@ -1,5 +1,15 @@
 import { Type } from 'class-transformer'
-import { IsString, IsEmail, IsUrl, IsDate, IsNumber } from 'class-validator'
+import {
+  IsString,
+  IsEmail,
+  IsUrl,
+  IsDate,
+  IsNumber,
+  Length,
+  Matches
+} from 'class-validator'
+
+const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
 
 export class CreateStudentDTO {
   constructor(
@@ -29,6 +39,10 @@ export class CreateStudentDTO {
   }
 
   @IsString()
+  @Length(14, 14)
+  @Matches(REGEX_TAX_ID, {
+    message: 'Tax ID must be in the format 000.000.000-00'
+  })
   readonly tax_id: string
 
   @IsString()

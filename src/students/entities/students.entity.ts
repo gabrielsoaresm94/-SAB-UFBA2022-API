@@ -58,6 +58,9 @@ export class StudentEntity implements User {
   @OneToOne(() => Scholarship)
   @JoinColumn()
   scolarship: Scholarship
+
+  @Column()
+  defense_prediction: Date
 }
 
 export function toStudentResponseDTO(
