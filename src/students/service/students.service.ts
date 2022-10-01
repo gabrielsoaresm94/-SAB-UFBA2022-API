@@ -12,12 +12,7 @@ import {
 import { CreateStudentDTO } from '../model/student.dto.input'
 import { hashPassword } from '../../utils/bcrypt'
 import { ResponseStudentDTO } from '../model/student.response.dto'
-import {
-  paginate,
-  IPaginationOptions,
-  Pagination,
-  IPaginationMeta
-} from 'nestjs-typeorm-paginate'
+import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
 
@@ -28,34 +23,14 @@ export class StudentsService {
     private studentRepository: Repository<StudentEntity>
   ) {}
 
-  async findAllStudents(options: IPaginationOptions) {
-    // const students: StudentEntity[] = await this.studentRepository.find({
-    //   relations: ['articles']
-    // })
-    // return students.map((student) => toStudentResponseDTO(student))
-
-    const studentsPaginate = paginate<StudentEntity>(
-      this.studentRepository,
-      options,
-      { relations: ['articles'] }
-    )
-    const items = (await studentsPaginate).items
-    const itemsDto = await items.map((student) => toStudentResponseDTO(student))
-    const meta = (await studentsPaginate).meta
-    const metaDto = new PageMetaDto(
-      meta.itemCount,
-      meta.itemsPerPage,
-      meta.totalItems,
-      meta.totalPages,
-      meta.currentPage
-    )
-
-    const p = new PageDto(itemsDto, metaDto)
-    console.log(p)
-    return p
+  async findAllStudents() {
+    const students: StudentEntity[] = await this.studentRepository.find({
+      relations: ['articles']
+    })
+    return students.map((student) => toStudentResponseDTO(student))
   }
 
-  async paginate(options: IPaginationOptions) {
+  async findAllStudentsPaginate(options: IPaginationOptions) {
     const studentsPaginate = paginate<StudentEntity>(
       this.studentRepository,
       options,
@@ -72,9 +47,7 @@ export class StudentsService {
       meta.currentPage
     )
 
-    const p = new PageDto(itemsDto, metaDto)
-    console.log(p)
-    return p
+    return new PageDto(itemsDto, metaDto)
   }
 
   async findById(id: number) {

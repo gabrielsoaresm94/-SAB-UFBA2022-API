@@ -1,5 +1,3 @@
-import { PageMetaDtoParameters } from './page.parameters.dto'
-
 export class PageMetaDto {
   readonly totalItems: number
   readonly itemCount: number
