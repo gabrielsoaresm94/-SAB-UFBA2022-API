@@ -5,6 +5,8 @@ import {
   Param,
   Patch,
   Post,
+  DefaultValuePipe,
+  ParseIntPipe,
   Query
 } from '@nestjs/common'
 import { CreateStudentDTO } from '../model/student.dto.input'
@@ -18,6 +20,18 @@ export class StudentsController {
   @Get('/list/all')
   async findAllStudents() {
     return await this.studentsService.findAllStudents()
+  }
+
+  @Get('/paginate')
+  async paginate(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10
+  ) {
+    limit = limit > 100 ? 100 : limit
+    return await this.studentsService.paginate({
+      page,
+      limit
+    })
   }
 
   @Get('find/byid/:id')

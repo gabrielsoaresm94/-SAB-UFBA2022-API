@@ -12,6 +12,11 @@ import {
 import { CreateStudentDTO } from '../model/student.dto.input'
 import { hashPassword } from '../../utils/bcrypt'
 import { ResponseStudentDTO } from '../model/student.response.dto'
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions
+} from 'nestjs-typeorm-paginate'
 
 @Injectable()
 export class StudentsService {
@@ -25,6 +30,15 @@ export class StudentsService {
       relations: ['articles']
     })
     return students.map((student) => toStudentResponseDTO(student))
+  }
+
+  async paginate(options: IPaginationOptions) {
+    const studentsPaginate = paginate<StudentEntity>(
+      this.studentRepository,
+      options
+    )
+    console.log(typeof studentsPaginate)
+    return studentsPaginate
   }
 
   async findById(id: number) {
