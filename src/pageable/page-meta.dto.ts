@@ -1,19 +1,23 @@
 import { PageMetaDtoParameters } from './page.parameters.dto'
 
 export class PageMetaDto {
-  readonly page: number
-  readonly take: number
+  readonly totalItems: number
   readonly itemCount: number
-  readonly pageCount: number
-  readonly hasPreviousPage: boolean
-  readonly hasNextPage: boolean
+  readonly itemsPerPage: number
+  readonly totalPages: number
+  readonly currentPage: number
 
-  constructor({ pageOptionsDto, itemCount }: PageMetaDtoParameters) {
-    this.page = pageOptionsDto.page
-    this.take = pageOptionsDto.take
+  constructor(
+    totalItems: number,
+    itemCount: number,
+    itemsPerPage: number,
+    totalPages: number,
+    currentPage: number
+  ) {
+    this.totalItems = totalItems
     this.itemCount = itemCount
-    this.pageCount = Math.ceil(itemCount / pageOptionsDto.take)
-    this.hasPreviousPage = this.page > 1
-    this.hasNextPage = this.page < this.pageCount
+    this.itemsPerPage = itemsPerPage
+    this.totalPages = totalPages
+    this.currentPage = currentPage
   }
 }

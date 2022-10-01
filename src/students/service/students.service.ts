@@ -17,6 +17,8 @@ import {
   Pagination,
   IPaginationOptions
 } from 'nestjs-typeorm-paginate'
+import { PageDto } from '../../pageable/page.dto'
+import { PageMetaDto } from '../../pageable/page-meta.dto'
 
 @Injectable()
 export class StudentsService {
@@ -37,13 +39,19 @@ export class StudentsService {
       this.studentRepository,
       options
     )
-
-    return new Pagination<ResponseStudentDTO>(
-      (await studentsPaginate).items.map((student) =>
-        toStudentResponseDTO(student)
-      )
-
+    const items = (await studentsPaginate).items
+    const meta = (await studentsPaginate).meta
+    const metaDto = new PageMetaDto(
+      meta.itemCount,
+      meta.itemsPerPage,
+      meta.totalItems,
+      meta.totalPages,
+      meta.currentPage
     )
+
+    const p = new PageDto(items, metaDto)
+    console.log(p)
+    return p
   }
 
   async findById(id: number) {

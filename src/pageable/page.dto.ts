@@ -1,13 +1,14 @@
 import { IsArray } from 'class-validator'
+import { PageMetaDto } from './page-meta.dto'
 
 export class PageDto<T> {
   @IsArray()
-  readonly data: T[]
+  readonly items: T[]
 
   readonly meta: PageMetaDto
 
-  constructor(data: T[], meta: PageMetaDto) {
-    this.data = data
+  constructor(items: T[], meta: PageMetaDto) {
+    this.items = items
     this.meta = meta
   }
 }
