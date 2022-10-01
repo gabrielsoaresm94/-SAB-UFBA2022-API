@@ -21,6 +21,7 @@ export class TestUtil {
       'https://lattes.cnpq.br/1234567890123456',
       1,
       new Date(),
+      new Date(),
       '12345678901',
       'STUDENT',
       [article, article]

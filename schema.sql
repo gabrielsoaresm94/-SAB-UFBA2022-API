@@ -62,3 +62,6 @@ CREATE TABLE admin(
   password TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'ADMIN'
 );
+
+ALTER TABLE student
+ADD defense_prediction DATE;
