@@ -12,6 +12,9 @@ import {
 import { CreateStudentDTO } from '../model/student.dto.input'
 import { hashPassword } from '../../utils/bcrypt'
 import { ResponseStudentDTO } from '../model/student.response.dto'
+import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
+import { PageDto } from '../../pageable/page.dto'
+import { PageMetaDto } from '../../pageable/page-meta.dto'
 
 @Injectable()
 export class StudentsService {
@@ -20,11 +23,31 @@ export class StudentsService {
     private studentRepository: Repository<StudentEntity>
   ) {}
 
-  async findAllStudents(): Promise<ResponseStudentDTO[]> {
+  async findAllStudents() {
     const students: StudentEntity[] = await this.studentRepository.find({
       relations: ['articles']
     })
     return students.map((student) => toStudentResponseDTO(student))
+  }
+
+  async findAllStudentsPaginate(options: IPaginationOptions) {
+    const studentsPaginate = paginate<StudentEntity>(
+      this.studentRepository,
+      options,
+      { relations: ['articles'] }
+    )
+    const items = (await studentsPaginate).items
+    const itemsDto = await items.map((student) => toStudentResponseDTO(student))
+    const meta = (await studentsPaginate).meta
+    const metaDto = new PageMetaDto(
+      meta.itemCount,
+      meta.itemsPerPage,
+      meta.totalItems,
+      meta.totalPages,
+      meta.currentPage
+    )
+
+    return new PageDto(itemsDto, metaDto)
   }
 
   async findById(id: number) {
