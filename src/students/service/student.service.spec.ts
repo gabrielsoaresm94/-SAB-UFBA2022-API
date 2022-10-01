@@ -4,6 +4,7 @@ import { StudentEntity } from '../entities/students.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { NotFoundException } from '@nestjs/common'
 import { TestUtil } from '../../common/tests/TestUtil'
+import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 
 describe('User Service', () => {
   let service: StudentsService
@@ -11,7 +12,10 @@ describe('User Service', () => {
   const mockRepository = {
     find: jest.fn(),
     findOne: jest.fn(),
-    create: jest.fn()
+    create: jest.fn(),
+    findAllStudentsPaginate: jest.fn(),
+    limit: jest.fn(),
+    offset: jest.fn()
   }
 
   beforeAll(async () => {
@@ -30,8 +34,13 @@ describe('User Service', () => {
     mockRepository.find.mockReset()
     mockRepository.findOne.mockReset()
     mockRepository.create.mockReset()
+    mockRepository.findAllStudentsPaginate.mockReset()
+    mockRepository.limit.mockReset()
+    mockRepository.offset.mockReset()
   })
+
   jest.useFakeTimers()
+
   describe('findUserById', () => {
     it('Should return student after Get student by ID', async () => {
       const student = TestUtil.givenValidStudent()
@@ -46,6 +55,16 @@ describe('User Service', () => {
       mockRepository.findOne.mockReturnValue(null)
       expect(service.findById(1)).rejects.toBeInstanceOf(NotFoundException)
       expect(mockRepository.findOne).toBeCalledTimes(1)
+    })
+
+    it('Should return a list of students', async () => {
+      const student = TestUtil.givenValidStudent()
+      const studentsList = [student, student, student]
+
+      mockRepository.find.mockResolvedValue([student, student, student])
+      const studentResult = await service.findAllStudents()
+      expect(studentResult).toMatchObject(studentsList)
+      expect(mockRepository.find).toBeCalledTimes(1)
     })
   })
 })
