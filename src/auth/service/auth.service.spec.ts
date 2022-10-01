@@ -25,7 +25,7 @@ describe('User Login Service', () => {
       providers: [
         UserService,
         AuthService,
-        {provide: getRepositoryToken(Advisor),useValue: mockRepository},
+        { provide: getRepositoryToken(Advisor), useValue: mockRepository },
         {
           provide: getRepositoryToken(StudentEntity),
           useValue: mockRepository

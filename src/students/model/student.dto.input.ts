@@ -7,7 +7,8 @@ import {
   IsNumber,
   Length,
   Matches,
-  IsOptional
+  IsOptional,
+  IsPhoneNumber
 } from 'class-validator'
 
 const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
@@ -69,6 +70,7 @@ export class CreateStudentDTO {
   readonly enrollment_date_pgcomp: Date
 
   @IsString()
+  @IsPhoneNumber('BR')
   readonly phone_number: string
 
   @IsString()
