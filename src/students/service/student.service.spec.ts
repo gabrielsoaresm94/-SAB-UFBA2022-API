@@ -4,7 +4,6 @@ import { StudentEntity } from '../entities/students.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { NotFoundException } from '@nestjs/common'
 import { TestUtil } from '../../common/tests/TestUtil'
-import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 
 describe('User Service', () => {
   let service: StudentsService
@@ -12,10 +11,7 @@ describe('User Service', () => {
   const mockRepository = {
     find: jest.fn(),
     findOne: jest.fn(),
-    create: jest.fn(),
-    findAllStudentsPaginate: jest.fn(),
-    limit: jest.fn(),
-    offset: jest.fn()
+    create: jest.fn()
   }
 
   beforeAll(async () => {
@@ -34,9 +30,6 @@ describe('User Service', () => {
     mockRepository.find.mockReset()
     mockRepository.findOne.mockReset()
     mockRepository.create.mockReset()
-    mockRepository.findAllStudentsPaginate.mockReset()
-    mockRepository.limit.mockReset()
-    mockRepository.offset.mockReset()
   })
 
   jest.useFakeTimers()
