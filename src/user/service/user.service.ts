@@ -28,7 +28,7 @@ export class UserService {
       const adminUser = await this.adminRepository.findOne({
         where: { tax_id }
       })
-      console.log(adminUser)
+
       if (advisorUser) {
         user = advisorUser
       } else if (studentUser) {
@@ -36,6 +36,7 @@ export class UserService {
       } else if (adminUser) {
         user = adminUser
       }
+
       if (user) return new CreateUserDTO(user)
       throw new NotFoundException(errorMessages.userNotFoundMessage)
     } catch (error) {
