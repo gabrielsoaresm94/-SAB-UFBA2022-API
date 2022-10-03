@@ -36,7 +36,7 @@ CREATE TABLE scholarship(
   id SERIAL PRIMARY KEY,
   student_id INT REFERENCES student(id),
   agency_id INT REFERENCES agency(id),
-  scholarship_starts_at DATE NOT NULL,
+  scholarship_startss_at DATE NOT NULL,
   scholarship_ends_at DATE NOT NULL,
   extension_ends_at DATE NOT NULL,
   salary BIGINT NOT NULL,

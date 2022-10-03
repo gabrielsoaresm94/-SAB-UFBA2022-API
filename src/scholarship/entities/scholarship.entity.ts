@@ -14,8 +14,6 @@ export class Scholarship {
   id: number
 
   @Column({ nullable: false })
-  @OneToOne(() => StudentEntity)
-  @JoinColumn()
   student_id: number
 
   @Column({ nullable: false })
@@ -23,7 +21,7 @@ export class Scholarship {
   agency_id: number
 
   @Column({ nullable: false })
-  scholarship_start_at: Date
+  scholarship_starts_at: Date
 
   @Column({ nullable: false })
   scholarship_ends_at: Date
@@ -52,7 +50,7 @@ export function toScholarshipDTO(
     scholarship.id,
     scholarship.student_id,
     scholarship.agency_id,
-    scholarship.scholarship_start_at,
+    scholarship.scholarship_starts_at,
     scholarship.scholarship_ends_at,
     scholarship.extension_ends_at,
     scholarship.salary,
