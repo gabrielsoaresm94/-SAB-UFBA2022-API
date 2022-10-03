@@ -5,7 +5,6 @@ export class ResponseAdvisorDto {
     name: string,
     email: string,
     phone_number: string,
-    password: string,
     role: string
   ) {
     this.id = id
@@ -13,7 +12,6 @@ export class ResponseAdvisorDto {
     this.name = name
     this.email = email
     this.phone_number = phone_number
-    this.password = password
     this.role = role
   }
 
@@ -22,6 +20,5 @@ export class ResponseAdvisorDto {
   readonly name: string
   readonly email: string
   readonly phone_number: string
-  readonly password: string
   readonly role: string
 }

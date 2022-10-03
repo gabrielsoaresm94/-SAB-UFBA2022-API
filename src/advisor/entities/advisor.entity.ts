@@ -33,7 +33,6 @@ export function toAdvisorDTO(advisor: Advisor): ResponseAdvisorDto {
     advisor.name,
     advisor.email,
     advisor.phone_number,
-    advisor.password,
     advisor.role
   )
 }
