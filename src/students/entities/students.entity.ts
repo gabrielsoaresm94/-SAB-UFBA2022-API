@@ -5,7 +5,6 @@ import {
 import {
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -55,8 +54,7 @@ export class StudentEntity implements User {
   @OneToMany(() => ArticleEntity, (article) => article.student)
   articles: ArticleEntity[]
 
-  @OneToOne(() => Scholarship)
-  @JoinColumn()
+  @OneToOne(() => Scholarship, (scholarship) => scholarship.student)
   scolarship: Scholarship
 
   @Column()

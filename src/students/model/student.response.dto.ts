@@ -32,28 +32,16 @@ export class ResponseStudentDTO {
   }
 
   readonly id: number
-
   readonly tax_id: string
-
   readonly enrolment_number: string
-
   readonly name: string
-
   readonly email: string
-
   readonly course: string
-
   readonly link_lattes: string
-
   readonly advisor_id: number
-
   readonly enrollment_date_pgcomp: Date
-
   readonly defense_prediction: Date
-
   readonly phone_number: string
-
   readonly role: string
-
   readonly articles: ResponseArticleDTO[]
 }

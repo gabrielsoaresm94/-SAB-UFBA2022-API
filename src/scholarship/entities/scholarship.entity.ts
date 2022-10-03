@@ -40,6 +40,8 @@ export class Scholarship {
   @Column({ nullable: false })
   model: string
 
+  @OneToOne(() => StudentEntity, (student) => student.scolarship)
+  @JoinColumn({ name: 'student_id' })
   student: StudentEntity
 }
 

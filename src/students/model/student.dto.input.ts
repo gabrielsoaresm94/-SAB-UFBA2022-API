@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer'
+import { Transform, Type } from 'class-transformer'
 import {
   IsString,
   IsEmail,
@@ -48,6 +48,7 @@ export class CreateStudentDTO {
   readonly tax_id: string
 
   @IsString()
+  @Length(9, 9)
   readonly enrolment_number: string
 
   @IsString()
@@ -77,6 +78,7 @@ export class CreateStudentDTO {
   readonly password: string
 
   @IsString()
+  @Transform(({ value }) => value.toUpperCase())
   readonly role: string
 
   @IsOptional()

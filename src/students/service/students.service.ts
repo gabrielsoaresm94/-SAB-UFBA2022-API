@@ -25,8 +25,12 @@ export class StudentsService {
 
   async findAllStudents() {
     const students: StudentEntity[] = await this.studentRepository.find({
-      relations: ['articles']
+      relations: {
+        articles: true,
+        scolarship: true
+      }
     })
+    console.log(students[0])
     return students.map((student) => toStudentResponseDTO(student))
   }
 
@@ -46,7 +50,7 @@ export class StudentsService {
       meta.totalPages,
       meta.currentPage
     )
-    console.log(meta)
+
     return new PageDto(itemsDto, metaDto)
   }
 
