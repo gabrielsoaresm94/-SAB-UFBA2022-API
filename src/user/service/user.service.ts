@@ -5,13 +5,15 @@ import { CreateUserDTO } from '../model/user.dto.input'
 import { NotFoundException } from '@nestjs/common'
 import { errorMessages } from '../../auth/constants'
 import { Advisor } from '../../advisor/entities/advisor.entity'
-
+import { Admin } from '../../admin/entities/admin.entity'
 export class UserService {
   constructor(
     @InjectRepository(StudentEntity)
     private studentRepository: Repository<StudentEntity>,
     @InjectRepository(Advisor)
-    private advisorRepository: Repository<Advisor>
+    private advisorRepository: Repository<Advisor>,
+    @InjectRepository(Admin)
+    private adminRepository: Repository<Admin>
   ) {}
 
   async findUserByTaxId(tax_id: string): Promise<CreateUserDTO> {
@@ -23,10 +25,16 @@ export class UserService {
       const advisorUser = await this.advisorRepository.findOne({
         where: { tax_id }
       })
+      const adminUser = await this.adminRepository.findOne({
+        where: { tax_id }
+      })
+      console.log(adminUser)
       if (advisorUser) {
         user = advisorUser
       } else if (studentUser) {
         user = studentUser
+      } else if (adminUser) {
+        user = adminUser
       }
       if (user) return new CreateUserDTO(user)
       throw new NotFoundException(errorMessages.userNotFoundMessage)
