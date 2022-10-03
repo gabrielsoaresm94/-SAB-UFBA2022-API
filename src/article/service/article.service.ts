@@ -18,6 +18,12 @@ export class ArticleService {
   ) {}
 
   async create(createArticleDto: CreateArticleDto) {
+    const studentIsValid = await this.studentService.findById(
+      createArticleDto.student_id
+    )
+    if (!studentIsValid) {
+      return new NotFoundException('Student not found')
+    }
     return this.articleRepository.save(createArticleDto)
   }
 
