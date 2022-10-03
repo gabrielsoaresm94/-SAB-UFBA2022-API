@@ -77,6 +77,7 @@ export function toStudentResponseDTO(
     student.defense_prediction,
     student.phone_number,
     student.role,
-    student.articles.map((article) => toArticleResponseDTO(article))
+    student.articles.map((article) => toArticleResponseDTO(article)),
+    student.scolarship
   )
 }
