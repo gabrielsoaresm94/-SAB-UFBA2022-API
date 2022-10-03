@@ -5,7 +5,7 @@ export class ResponseStudentDTO {
   constructor(
     id: number,
     tax_id: string,
-    enrolment_number: string,
+    enrollment_number: string,
     name: string,
     email: string,
     course: string,
@@ -20,7 +20,7 @@ export class ResponseStudentDTO {
   ) {
     this.id = id
     this.tax_id = tax_id
-    this.enrolment_number = enrolment_number
+    this.enrollment_number = enrollment_number
     this.name = name
     this.email = email
     this.course = course
@@ -36,7 +36,7 @@ export class ResponseStudentDTO {
 
   readonly id: number
   readonly tax_id: string
-  readonly enrolment_number: string
+  readonly enrollment_number: string
   readonly name: string
   readonly email: string
   readonly course: string

@@ -58,7 +58,7 @@ export class ArticleService {
     const students = await this.studentService.findAllStudents()
     for (const student of students) {
       doc.text('Nome do aluno: ' + student.name).fontSize(16)
-      doc.text('Matrícula: ' + student.enrolment_number).fontSize(16)
+      doc.text('Matrícula: ' + student.enrollment_number).fontSize(16)
       doc.text('Curso: ' + student.course).fontSize(16)
       doc.text('Email: ' + student.email).fontSize(16)
       doc

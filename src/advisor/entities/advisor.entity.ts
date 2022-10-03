@@ -1,6 +1,7 @@
 import { User } from '../../user/interface/user.interface'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { ResponseAdvisorDto } from '../dto/response-advisor.dto'
+import { StudentEntity } from '../../students/entities/students.entity'
 
 @Entity('advisor')
 export class Advisor implements User {
@@ -24,6 +25,9 @@ export class Advisor implements User {
 
   @Column({ nullable: true, default: 'ADVISOR' })
   role: string
+
+  @OneToOne(() => StudentEntity, (student) => student.advisor)
+  student: StudentEntity
 }
 
 export function toAdvisorDTO(advisor: Advisor): ResponseAdvisorDto {

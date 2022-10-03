@@ -8,7 +8,8 @@ import {
   Length,
   Matches,
   IsOptional,
-  IsPhoneNumber
+  IsPhoneNumber,
+  Contains
 } from 'class-validator'
 
 const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
@@ -16,7 +17,7 @@ const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
 export class CreateStudentDTO {
   constructor(
     tax_id: string,
-    enrolment_number: string,
+    enrollment_number: string,
     name: string,
     email: string,
     course: string,
@@ -28,7 +29,7 @@ export class CreateStudentDTO {
     role: string
   ) {
     this.tax_id = tax_id
-    this.enrolment_number = enrolment_number
+    this.enrollment_number = enrollment_number
     this.name = name
     this.email = email
     this.course = course
@@ -49,7 +50,7 @@ export class CreateStudentDTO {
 
   @IsString()
   @Length(9, 9)
-  readonly enrolment_number: string
+  readonly enrollment_number: string
 
   @IsString()
   readonly name: string
@@ -79,6 +80,7 @@ export class CreateStudentDTO {
 
   @IsString()
   @Transform(({ value }) => value.toUpperCase())
+  @Contains('STUDENT')
   readonly role: string
 
   @IsOptional()
