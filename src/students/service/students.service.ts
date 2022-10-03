@@ -40,13 +40,13 @@ export class StudentsService {
     const itemsDto = await items.map((student) => toStudentResponseDTO(student))
     const meta = (await studentsPaginate).meta
     const metaDto = new PageMetaDto(
+      meta.totalItems,
       meta.itemCount,
       meta.itemsPerPage,
-      meta.totalItems,
       meta.totalPages,
       meta.currentPage
     )
-
+    console.log(meta)
     return new PageDto(itemsDto, metaDto)
   }
 
