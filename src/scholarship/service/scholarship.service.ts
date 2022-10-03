@@ -27,9 +27,10 @@ export class ScholarshipService {
   async findAll(): Promise<ResponseScholarshipDto[]> {
     const scholarships: Scholarship[] = await this.scholarshipRepository.find({
       relations: {
-        student_id: true
+        student: true
       }
     })
+
     return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
 
@@ -37,7 +38,7 @@ export class ScholarshipService {
     const scholarship = await this.scholarshipRepository.find({
       where: { id: id },
       relations: {
-        student_id: true
+        student: true
       }
     })
     if (!scholarship || scholarship.length === 0) {
