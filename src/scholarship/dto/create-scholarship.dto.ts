@@ -5,7 +5,7 @@ export class CreateScholarshipDto {
   constructor(
     student_id: number,
     agency_id: number,
-    scholarship_start_at: Date,
+    scholarship_starts_at: Date,
     scholarship_ends_at: Date,
     extension_ends_at: Date,
     salary: number,
@@ -14,7 +14,7 @@ export class CreateScholarshipDto {
   ) {
     this.student_id = student_id
     this.agency_id = agency_id
-    this.scholarship_start_at = scholarship_start_at
+    this.scholarship_starts_at = scholarship_starts_at
     this.scholarship_ends_at = scholarship_ends_at
     this.extension_ends_at = extension_ends_at
     this.salary = salary
@@ -30,7 +30,7 @@ export class CreateScholarshipDto {
 
   @Type(() => Date)
   @IsDate()
-  readonly scholarship_start_at: Date
+  readonly scholarship_starts_at: Date
 
   @Type(() => Date)
   @IsDate()

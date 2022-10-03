@@ -25,8 +25,12 @@ export class StudentsService {
 
   async findAllStudents() {
     const students: StudentEntity[] = await this.studentRepository.find({
-      relations: ['articles']
+      relations: {
+        articles: true,
+        scolarship: true
+      }
     })
+    console.log(students[0])
     return students.map((student) => toStudentResponseDTO(student))
   }
 
@@ -34,7 +38,7 @@ export class StudentsService {
     const studentsPaginate = paginate<StudentEntity>(
       this.studentRepository,
       options,
-      { relations: ['articles'] }
+      { relations: ['articles', 'scolarship'] }
     )
     const items = (await studentsPaginate).items
     const itemsDto = await items.map((student) => toStudentResponseDTO(student))
@@ -46,13 +50,13 @@ export class StudentsService {
       meta.totalPages,
       meta.currentPage
     )
-    console.log(meta)
+
     return new PageDto(itemsDto, metaDto)
   }
 
   async findById(id: number) {
     const student = await this.studentRepository.findOne({
-      relations: { articles: true },
+      relations: { articles: true, scolarship: true },
       loadEagerRelations: true,
       where: {
         id: id
@@ -64,7 +68,7 @@ export class StudentsService {
 
   async findByCourse(course: string): Promise<ResponseStudentDTO[]> {
     const students = await this.studentRepository.find({
-      relations: { articles: true },
+      relations: { articles: true, scolarship: true },
       loadEagerRelations: true,
       where: { course: ILike(`%${course}%`) }
     })
@@ -74,7 +78,7 @@ export class StudentsService {
   async findByEmail(email: string): Promise<ResponseStudentDTO> {
     const findStudent = await this.studentRepository.findOne({
       where: { email },
-      relations: { articles: true },
+      relations: { articles: true, scolarship: true },
       loadEagerRelations: true
     })
     if (findStudent) return toStudentResponseDTO(findStudent)
@@ -85,7 +89,7 @@ export class StudentsService {
   async findByAdvisorId(advisor_id: number): Promise<ResponseStudentDTO[]> {
     const students: StudentEntity[] = await this.studentRepository.find({
       where: { advisor_id },
-      relations: { articles: true },
+      relations: { articles: true, scolarship: true },
       loadEagerRelations: true
     })
     return students.map((student) => toStudentResponseDTO(student))

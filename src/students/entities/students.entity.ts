@@ -5,7 +5,6 @@ import {
 import {
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -13,6 +12,7 @@ import {
 import { ResponseStudentDTO } from '../model/student.response.dto'
 import { Scholarship } from '../../scholarship/entities/scholarship.entity'
 import { User } from '../../user/interface/user.interface'
+import { Advisor } from '../../advisor/entities/advisor.entity'
 
 @Entity('student')
 export class StudentEntity implements User {
@@ -23,7 +23,7 @@ export class StudentEntity implements User {
   tax_id: string
 
   @Column({ length: 9, nullable: false, unique: true })
-  enrolment_number: string
+  enrollment_number: string
 
   @Column({ nullable: false })
   name: string
@@ -55,9 +55,11 @@ export class StudentEntity implements User {
   @OneToMany(() => ArticleEntity, (article) => article.student)
   articles: ArticleEntity[]
 
-  @OneToOne(() => Scholarship)
-  @JoinColumn()
+  @OneToOne(() => Scholarship, (scholarship) => scholarship.student)
   scolarship: Scholarship
+
+  @OneToOne(() => Advisor, (advisor) => advisor.student)
+  advisor: Advisor
 
   @Column()
   defense_prediction: Date
@@ -69,7 +71,7 @@ export function toStudentResponseDTO(
   return new ResponseStudentDTO(
     student.id,
     student.tax_id,
-    student.enrolment_number,
+    student.enrollment_number,
     student.name,
     student.email,
     student.course,
@@ -79,6 +81,7 @@ export function toStudentResponseDTO(
     student.defense_prediction,
     student.phone_number,
     student.role,
-    student.articles.map((article) => toArticleResponseDTO(article))
+    student.articles.map((article) => toArticleResponseDTO(article)),
+    student.scolarship
   )
 }
