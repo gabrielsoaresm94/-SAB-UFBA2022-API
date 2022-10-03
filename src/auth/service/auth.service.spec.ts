@@ -9,6 +9,7 @@ import { jwtConstants } from '../constants'
 import { CreateStudentDTO } from '../../students/model/student.dto.input'
 import { NotFoundException } from '@nestjs/common'
 import { Advisor } from '../../advisor/entities/advisor.entity'
+import { Admin } from '../../admin/entities/admin.entity'
 
 describe('User Login Service', () => {
   let authService: AuthService
@@ -28,6 +29,10 @@ describe('User Login Service', () => {
         { provide: getRepositoryToken(Advisor), useValue: mockRepository },
         {
           provide: getRepositoryToken(StudentEntity),
+          useValue: mockRepository
+        },
+        {
+          provide: getRepositoryToken(Admin),
           useValue: mockRepository
         }
       ],
