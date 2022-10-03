@@ -13,10 +13,12 @@ import { JwtStrategy } from './strategy/jwt.strategy'
 import { Advisor } from '../advisor/entities/advisor.entity'
 import { AdminModule } from '../admin/admin.module'
 import { AdvisorModule } from '../advisor/advisor.module'
+import { Admin } from '../admin/entities/admin.entity'
+import { AdminService } from '../admin/service/admin.service'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([StudentEntity, Advisor]),
+    TypeOrmModule.forFeature([StudentEntity, Advisor, Admin]),
     UserModule,
     PassportModule,
     AdminModule,
@@ -26,7 +28,13 @@ import { AdvisorModule } from '../advisor/advisor.module'
       signOptions: { expiresIn: jwtConstants.expirationTime }
     })
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UserService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    UserService,
+    AdminService
+  ],
   controllers: [AuthController],
   exports: [AuthService]
 })

@@ -10,6 +10,7 @@ import {
 import { AdminService } from '../service/admin.service'
 import { CreateAdminDto } from '../dto/create-admin.dto'
 import { UpdateAdminDto } from '../dto/update-admin.dto'
+import { Query } from '@nestjs/common/decorators'
 
 @Controller('v1/admin')
 export class AdminController {
@@ -25,9 +26,9 @@ export class AdminController {
     return this.adminService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id)
+  @Get(':tax_id')
+  findOneByTaxId(@Query('tax_id') tax_id: string) {
+    return this.adminService.findOneByTaxId(tax_id)
   }
 
   @Patch(':id')
