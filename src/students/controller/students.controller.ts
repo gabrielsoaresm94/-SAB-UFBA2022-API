@@ -60,7 +60,7 @@ export class StudentsController {
   @Post()
   async createStudent(
     @Body() student: CreateStudentDTO,
-    scholarship: CreateScholarshipDto
+     scholarship: CreateScholarshipDto
   ) {
     return this.studentsService.createStudent(student, scholarship)
   }
