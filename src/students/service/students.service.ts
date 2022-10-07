@@ -15,7 +15,6 @@ import { ResponseStudentDTO } from '../model/student.response.dto'
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
-import { CreateScholarshipDto } from '../../scholarship/dto/create-scholarship.dto'
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 
 @Injectable()

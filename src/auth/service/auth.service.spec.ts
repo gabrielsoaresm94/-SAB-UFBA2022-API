@@ -74,7 +74,17 @@ describe('User Login Service', () => {
       new Date(),
       '999999999',
       '1234',
-      'STUDENT'
+      'STUDENT',
+      {
+        student_id: 1,
+        agency_id: 1,
+        scholarship_starts_at: new Date(),
+        scholarship_ends_at: new Date(),
+        extension_ends_at: new Date(),
+        salary: 1000,
+        active: true,
+        model: 'model'
+      }
     )
     const user = '123456789'
     const password = '12341'

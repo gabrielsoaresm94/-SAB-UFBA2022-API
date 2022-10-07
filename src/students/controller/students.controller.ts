@@ -9,7 +9,6 @@ import {
   ParseIntPipe,
   Query
 } from '@nestjs/common'
-import { CreateScholarshipDto } from '../../scholarship/dto/create-scholarship.dto'
 import { CreateStudentDTO } from '../model/student.dto.input'
 import { ResponseStudentDTO } from '../model/student.response.dto'
 import { StudentsService } from '../service/students.service'
