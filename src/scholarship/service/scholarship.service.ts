@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import {
-  BadRequestException,
-  NotFoundException
-} from '@nestjs/common/exceptions'
+import { NotFoundException } from '@nestjs/common/exceptions'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
@@ -17,11 +14,7 @@ export class ScholarshipService {
   ) {}
 
   async create(createScholarshipDto: CreateScholarshipDto) {
-    try {
-      return await this.scholarshipRepository.save(createScholarshipDto)
-    } catch (error) {
-      return new BadRequestException(error.message)
-    }
+    return await this.scholarshipRepository.save(createScholarshipDto)
   }
 
   async findAll(): Promise<ResponseScholarshipDto[]> {

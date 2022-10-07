@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { StudentsService } from '../service/students.service'
+import { StudentsService } from './students.service'
 import { StudentEntity } from '../entities/students.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { NotFoundException } from '@nestjs/common'
 import { TestUtil } from '../../common/tests/TestUtil'
+import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 
 describe('User Service', () => {
   let service: StudentsService
@@ -19,7 +20,11 @@ describe('User Service', () => {
       providers: [
         StudentsService,
         StudentEntity,
-        { provide: getRepositoryToken(StudentEntity), useValue: mockRepository }
+        ScholarshipService,
+        {
+          provide: getRepositoryToken(StudentEntity),
+          useValue: mockRepository
+        }
       ]
     }).compile()
 

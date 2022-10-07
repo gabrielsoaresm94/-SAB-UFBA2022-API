@@ -15,12 +15,14 @@ import { ResponseStudentDTO } from '../model/student.response.dto'
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
+import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 
 @Injectable()
 export class StudentsService {
   constructor(
     @InjectRepository(StudentEntity)
-    private studentRepository: Repository<StudentEntity>
+    private studentRepository: Repository<StudentEntity>,
+    private scholarshipService: ScholarshipService
   ) {}
 
   async findAllStudents() {
@@ -98,11 +100,15 @@ export class StudentsService {
   async createStudent(student: CreateStudentDTO) {
     try {
       const passwordHash = await hashPassword(student.password)
-      const newStudent = this.studentRepository.create({
+      const newStudent = await this.studentRepository.create({
         ...student,
         password: passwordHash
       })
-      await this.studentRepository.save(newStudent)
+      const savedStudent = await this.studentRepository.save(newStudent)
+      const toSaveScholarship = student.scholarship
+      toSaveScholarship.student_id = savedStudent.id
+      console.log(toSaveScholarship)
+      await this.scholarshipService.create(toSaveScholarship)
     } catch (error) {
       throw new BadRequestException(error.message)
     }
