@@ -98,22 +98,20 @@ export class StudentsService {
     return students.map((student) => toStudentResponseDTO(student))
   }
 
-  async createStudent(
-    student: CreateStudentDTO,
-    scholarship: CreateScholarshipDto
-  ) {
-    console.log(scholarship)
+  async createStudent(student: CreateStudentDTO) {
     try {
       const passwordHash = await hashPassword(student.password)
-      const newStudent = this.studentRepository.create({
+      const newStudent = await this.studentRepository.create({
         ...student,
         password: passwordHash
       })
-      const savedStudent = this.studentRepository.save(newStudent)
-      console.log(savedStudent)
-      //const newScholarship = this.scholarshipService.create(scholarship)
+      const savedStudent = await this.studentRepository.save(newStudent)
+      const toSaveScholarship = student.scholarship
+      toSaveScholarship.student_id = savedStudent.id
+      console.log(toSaveScholarship)
+      await this.scholarshipService.create(toSaveScholarship)
     } catch (error) {
-      throw new BadRequestException('Student already exists')
+      throw new BadRequestException(error.message)
     }
   }
 

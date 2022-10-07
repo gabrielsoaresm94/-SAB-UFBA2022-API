@@ -9,8 +9,13 @@ import {
   Matches,
   IsOptional,
   IsPhoneNumber,
-  Contains
+  Contains,
+  IsObject,
+  ValidateNested,
+  IsDefined,
+  IsNotEmptyObject
 } from 'class-validator'
+import { CreateScholarshipDto } from '../../scholarship/dto/create-scholarship.dto'
 
 const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
 
@@ -26,7 +31,8 @@ export class CreateStudentDTO {
     enrollment_date_pgcomp: Date,
     phone_number: string,
     password: string,
-    role: string
+    role: string,
+    scholarship: CreateScholarshipDto
   ) {
     this.tax_id = tax_id
     this.enrollment_number = enrollment_number
@@ -39,6 +45,7 @@ export class CreateStudentDTO {
     this.phone_number = phone_number
     this.password = password
     this.role = role
+    this.scholarship = scholarship
   }
 
   @IsString()
@@ -87,4 +94,11 @@ export class CreateStudentDTO {
   @Type(() => Date)
   @IsDate()
   readonly defense_prediction: Date
+
+  @ValidateNested({ each: true })
+  @IsObject()
+  @IsDefined()
+  @IsNotEmptyObject()
+  @Type(() => CreateScholarshipDto)
+  readonly scholarship: CreateScholarshipDto
 }

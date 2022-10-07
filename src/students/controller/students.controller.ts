@@ -58,11 +58,8 @@ export class StudentsController {
   }
 
   @Post()
-  async createStudent(
-    @Body() student: CreateStudentDTO,
-     scholarship: CreateScholarshipDto
-  ) {
-    return this.studentsService.createStudent(student, scholarship)
+  async createStudent(@Body() student: CreateStudentDTO) {
+    return this.studentsService.createStudent(student)
   }
 
   @Patch()

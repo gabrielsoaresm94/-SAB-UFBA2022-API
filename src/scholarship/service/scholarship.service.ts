@@ -17,11 +17,7 @@ export class ScholarshipService {
   ) {}
 
   async create(createScholarshipDto: CreateScholarshipDto) {
-    try {
-      return await this.scholarshipRepository.save(createScholarshipDto)
-    } catch (error) {
-      return new BadRequestException(error.message)
-    }
+    return await this.scholarshipRepository.save(createScholarshipDto)
   }
 
   async findAll(): Promise<ResponseScholarshipDto[]> {

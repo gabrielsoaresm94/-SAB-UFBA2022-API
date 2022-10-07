@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer'
-import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator'
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString
+} from 'class-validator'
 
 export class CreateScholarshipDto {
   constructor(
@@ -22,8 +28,8 @@ export class CreateScholarshipDto {
     this.model = model
   }
 
-  @IsNumber()
-  readonly student_id: number
+  @IsOptional()
+  student_id: number
 
   @IsNumber()
   readonly agency_id: number
@@ -38,6 +44,7 @@ export class CreateScholarshipDto {
 
   @Type(() => Date)
   @IsDate()
+  @IsOptional()
   readonly extension_ends_at: Date
 
   @IsNumber()
