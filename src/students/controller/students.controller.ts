@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Query
 } from '@nestjs/common'
+import { CreateScholarshipDto } from '../../scholarship/dto/create-scholarship.dto'
 import { CreateStudentDTO } from '../model/student.dto.input'
 import { ResponseStudentDTO } from '../model/student.response.dto'
 import { StudentsService } from '../service/students.service'
@@ -57,8 +58,11 @@ export class StudentsController {
   }
 
   @Post()
-  async createStudent(@Body() student: CreateStudentDTO) {
-    return this.studentsService.createStudent(student)
+  async createStudent(
+    @Body() student: CreateStudentDTO,
+    scholarship: CreateScholarshipDto
+  ) {
+    return this.studentsService.createStudent(student, scholarship)
   }
 
   @Patch()
