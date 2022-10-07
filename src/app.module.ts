@@ -27,7 +27,6 @@ require('dotenv')
     ScholarshipModule,
     AdminModule
   ],
-  controllers: [],
-  providers: []
+  controllers: []
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { Role } from "../../roles/enum/role.enum"
+import { Role } from '../../roles/enum/role.enum'
 
 export class ResponseUserDTO {
   constructor(id: number, tax_id: string, name: string, role: string) {

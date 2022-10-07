@@ -13,6 +13,7 @@ import { JwtStrategy } from './strategy/jwt.strategy'
 import { Advisor } from '../advisor/entities/advisor.entity'
 import { AdminModule } from '../admin/admin.module'
 import { AdvisorModule } from '../advisor/advisor.module'
+import { RolesGuard } from '../roles/guards/roles.guard'
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { AdvisorModule } from '../advisor/advisor.module'
       signOptions: { expiresIn: jwtConstants.expirationTime }
     })
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UserService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UserService, RolesGuard],
   controllers: [AuthController],
   exports: [AuthService]
 })
