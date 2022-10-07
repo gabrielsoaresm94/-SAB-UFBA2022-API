@@ -104,7 +104,7 @@ export class StudentsService {
       })
       await this.studentRepository.save(newStudent)
     } catch (error) {
-      throw new BadRequestException(error.message)
+      throw new BadRequestException('Student already exists')
     }
   }
 
