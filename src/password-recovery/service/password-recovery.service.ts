@@ -19,16 +19,29 @@ export class PasswordRecoveryService {
     private readonly jwtService: JwtService
   ) {}
 
+  generateRandomString(length: number) {
+    let result = ''
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const charactersLength = characters.length
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    }
+    return result
+  }
   async requestPasswordRecovery(
     dto: PasswordRecoveryRequestDto
   ): Promise<void> {
     const payload = { email: dto.email }
+    const newPassword = this.generateRandomString(8)
+    this.studentsService.updatePassword(dto.email, newPassword)
     const token = this.jwtService.sign(payload)
     await this.emailService.sendEmail({
       to: dto.email,
       template: 'recovery-password-request',
       context: {
         resetPasswordUrl: this.configService.get('RESET_PASSWORD_URL'),
+        newPassword,
         token
       }
     })
