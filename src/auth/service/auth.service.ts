@@ -38,10 +38,7 @@ export class AuthService {
     }
     return {
       access_token: this.jwtService.sign(payload),
-      id: loggedUser.id,
-      role: loggedUser.role,
-      tax_id: loggedUser.tax_id,
-      name: loggedUser.name
+      user: loggedUser
     }
   }
 }
