@@ -4,12 +4,15 @@ import { CreateAdvisorDto } from '../dto/create-advisor.dto'
 import { ResponseAdvisorDto } from '../dto/response-advisor.dto'
 import { HttpStatus } from '@nestjs/common/enums'
 import { HttpCode } from '@nestjs/common/decorators'
+import { Roles } from '../../roles/decorator/roles.decorator'
+import { Role } from '../../roles/enum/role.enum'
 //import { UpdateAdvisorDto } from '../dto/update-advisor.dto'
 
 @Controller('v1/advisor')
 export class AdvisorController {
   constructor(private readonly advisorService: AdvisorService) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   async create(@Body() createAdvisorDto: CreateAdvisorDto) {
     return await this.advisorService.create(createAdvisorDto)

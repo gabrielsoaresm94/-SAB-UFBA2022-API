@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { CreateArticleDto } from '../dto/create-article.dto'
+import { Roles } from '../../roles/decorator/roles.decorator'
+import { Role } from '../../roles/enum/role.enum'
 
 @Controller('v1/article')
 export class ArticleController {
@@ -11,11 +13,13 @@ export class ArticleController {
     return this.articleService.create(createArticleDto)
   }
 
+  @Roles(Role.ADMIN, Role.ADVISOR)
   @Get('/findall')
   findAll() {
     return this.articleService.findAll()
   }
 
+  @Roles(Role.ADMIN, Role.ADVISOR)
   @Get('/findbyid/:id')
   findOne(@Param('id') id: string) {
     return this.articleService.findOne(+id)
