@@ -156,6 +156,9 @@ export class StudentsService {
   }
 
   async updateStudent(student: CreateStudentDTO) {
+    if (student.password) {
+      student.password = await hashPassword(student.password)
+    }
     await this.studentRepository.update(
       { tax_id: student.tax_id },
       { ...student }

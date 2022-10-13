@@ -91,7 +91,7 @@ export class CreateStudentDTO {
   readonly phone_number: string
 
   @IsString()
-  readonly password: string
+  password: string
 
   @IsString()
   @Transform(({ value }) => value.toUpperCase())
