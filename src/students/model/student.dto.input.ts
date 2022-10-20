@@ -66,6 +66,12 @@ export class CreateStudentDTO {
   readonly email: string
 
   @IsString()
+   @MinLength(8, {
+    message: 'Course only is Doutorado or Mestrado',
+  })
+  @MaxLength(9, {
+    message: 'Course only is Doutorado or Mestrado',
+  })
   readonly course: string
 
   @IsUrl()
