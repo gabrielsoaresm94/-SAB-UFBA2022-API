@@ -32,6 +32,13 @@ export class AdvisorController {
     return await this.advisorService.findOneByEmail(email)
   }
 
+  @Get('/find/bytaxid/:taxid')
+  async findOneByTaxId(
+    @Param('taxid') tax_id: string
+  ): Promise<ResponseAdvisorDto> {
+    return await this.advisorService.findOneByTaxId(tax_id)
+  }
+
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateAdvisorDto: UpdateAdvisorDto) {
   //   return this.advisorService.update(+id, updateAdvisorDto)

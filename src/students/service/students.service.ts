@@ -16,13 +16,15 @@ import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
+import { AdvisorService } from '../../advisor/service/advisor.service'
 
 @Injectable()
 export class StudentsService {
   constructor(
     @InjectRepository(StudentEntity)
     private studentRepository: Repository<StudentEntity>,
-    private scholarshipService: ScholarshipService
+    private scholarshipService: ScholarshipService,
+    private advisorService: AdvisorService
   ) {}
 
   async findAllStudents() {
@@ -99,6 +101,31 @@ export class StudentsService {
 
   async createStudent(student: CreateStudentDTO) {
     try {
+      const haveEmailCadastred = await this.studentRepository.findOne({
+        where: { email: student.email }
+      })
+      if (haveEmailCadastred) {
+        throw new BadRequestException('Email already registered')
+      }
+      const advisor = await this.advisorService.findOneById(student.advisor_id)
+      const advisorTaxIdEquals = advisor.tax_id === student.tax_id
+      if (advisorTaxIdEquals) {
+        throw new BadRequestException('Have Advisor Tax ID registered')
+      }
+      const haveTaxIdCadastred = await this.studentRepository.findOne({
+        where: { tax_id: student.tax_id }
+      })
+      if (haveTaxIdCadastred) {
+        throw new BadRequestException('Tax ID already registered')
+      }
+      const haveEnrollmentNumberCadastred =
+        await this.studentRepository.findOne({
+          where: { enrollment_number: student.enrollment_number }
+        })
+      if (haveEnrollmentNumberCadastred) {
+        throw new BadRequestException('Enrollment Number already registered')
+      }
+
       const passwordHash = await hashPassword(student.password)
       const newStudent = await this.studentRepository.create({
         ...student,
