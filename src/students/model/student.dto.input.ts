@@ -13,7 +13,9 @@ import {
   IsObject,
   ValidateNested,
   IsDefined,
-  IsNotEmptyObject
+  IsNotEmptyObject,
+  MinLength,
+  MaxLength
 } from 'class-validator'
 import { CreateScholarshipDto } from '../../scholarship/dto/create-scholarship.dto'
 
@@ -66,7 +68,7 @@ export class CreateStudentDTO {
   readonly email: string
 
   @IsString()
-   @MinLength(8, {
+  @MinLength(8, {
     message: 'Course only is Doutorado or Mestrado',
   })
   @MaxLength(9, {
