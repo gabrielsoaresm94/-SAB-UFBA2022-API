@@ -68,4 +68,8 @@ ADD defense_prediction DATE;
 ALTER TABLE student
 ADD CONSTRAINT fk_students_advisor FOREIGN KEY (advisor_id) REFERENCES advisor (id);
 
-DROP database follow_up_scholarship
+ALTER TABLE student
+ALTER COLUMN enrollment_number SET varchar(10)
+
+ALTER TABLE student
+ALTER COLUMN enrollment_number SET varchar(10)
