@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { NotFoundException } from '@nestjs/common/exceptions'
+import {
+  BadRequestException,
+  NotFoundException
+} from '@nestjs/common/exceptions'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
 import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
+import { NewFinalDateScholarshipDto } from '../dto/update-scholarship.dto'
 import { Scholarship, toScholarshipDTO } from '../entities/scholarship.entity'
 
 @Injectable()
@@ -39,5 +43,29 @@ export class ScholarshipService {
     }
 
     return toScholarshipDTO(scholarship[0])
+  }
+
+  async updateFinalDateScholarship(
+    newFinalDate: NewFinalDateScholarshipDto,
+    id: number
+  ) {
+    const scholarship = await this.scholarshipRepository.findOneBy({ id })
+    if (!scholarship) throw new NotFoundException('Scholarship not found')
+
+    if (newFinalDate.newFinalDate < scholarship.scholarship_starts_at) {
+      throw new BadRequestException(
+        'Scholarship new end date must be after the start date'
+      )
+    }
+
+    if (newFinalDate.newFinalDate <= scholarship.scholarship_ends_at) {
+      throw new BadRequestException(
+        'Scholarship new end date must be after the current end date'
+      )
+    }
+    this.scholarshipRepository.update(
+      { id },
+      { scholarship_ends_at: newFinalDate.newFinalDate }
+    )
   }
 }
