@@ -54,7 +54,13 @@ export class ScholarshipService {
 
     if (newFinalDate.newFinalDate < scholarship.scholarship_starts_at) {
       throw new BadRequestException(
-        'Scholarship start date must be before the end date'
+        'Scholarship new end date must be after the start date'
+      )
+    }
+
+    if (newFinalDate.newFinalDate <= scholarship.scholarship_ends_at) {
+      throw new BadRequestException(
+        'Scholarship new end date must be after the current end date'
       )
     }
     this.scholarshipRepository.update(
