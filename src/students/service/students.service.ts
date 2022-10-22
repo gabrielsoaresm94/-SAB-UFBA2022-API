@@ -159,4 +159,8 @@ export class StudentsService {
     //TODO: IMPLEMENTS
     return student // TODO : update student
   }
+
+  async updateFinalDateScholarship(newFinalDate: Date) {
+    const student = this.findById(id)
+  }
 }
