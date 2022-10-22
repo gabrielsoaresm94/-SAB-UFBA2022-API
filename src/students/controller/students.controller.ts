@@ -65,11 +65,4 @@ export class StudentsController {
   async updateStudent(@Body() student: CreateStudentDTO) {
     return this.studentsService.updateStudent(student) // TODO : update student
   }
-
-  @Post('/:id/update/scholarship/end')
-  async updateFinalDateScholarship(
-    @Param('advisor_id') @Body() newFinalDate: Date
-  ) {
-    return this.studentsService.updateFinalDateScholarship(newFinalDate)
-  }
 }
