@@ -1,5 +1,5 @@
 import { ResponseArticleDTO } from '../../article/dto/response-article.dto'
-import { ResponseStudentDTO } from '../../students/model/student.response.dto'
+import { ResponseStudentDTO } from '../../students/dto/student.response.dto'
 
 export class TestUtil {
   static givenValidStudent() {

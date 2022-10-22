@@ -9,8 +9,8 @@ import {
   ParseIntPipe,
   Query
 } from '@nestjs/common'
-import { CreateStudentDTO } from '../model/student.dto.input'
-import { ResponseStudentDTO } from '../model/student.response.dto'
+import { CreateStudentDTO } from '../dto/student.dto.input'
+import { ResponseStudentDTO } from '../dto/student.response.dto'
 import { StudentsService } from '../service/students.service'
 
 @Controller('v1/students')

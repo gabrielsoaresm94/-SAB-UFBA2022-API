@@ -9,7 +9,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { ResponseStudentDTO } from '../model/student.response.dto'
+import { ResponseStudentDTO } from '../dto/student.response.dto'
 import { Scholarship } from '../../scholarship/entities/scholarship.entity'
 import { User } from '../../user/interface/user.interface'
 import { Advisor } from '../../advisor/entities/advisor.entity'
@@ -22,7 +22,7 @@ export class StudentEntity implements User {
   @Column({ length: 14, nullable: false, unique: true })
   tax_id: string
 
-  @Column({ length: 9, nullable: false, unique: true })
+  @Column({ length: 10, nullable: false, unique: true })
   enrollment_number: string
 
   @Column({ nullable: false })
@@ -40,7 +40,7 @@ export class StudentEntity implements User {
   @Column()
   advisor_id: number
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, type: 'date' })
   enrollment_date_pgcomp: Date
 
   @Column({ length: 11, nullable: false })

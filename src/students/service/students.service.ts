@@ -9,9 +9,9 @@ import {
   StudentEntity,
   toStudentResponseDTO
 } from '../entities/students.entity'
-import { CreateStudentDTO } from '../model/student.dto.input'
+import { CreateStudentDTO } from '../dto/student.dto.input'
 import { hashPassword } from '../../utils/bcrypt'
-import { ResponseStudentDTO } from '../model/student.response.dto'
+import { ResponseStudentDTO } from '../dto/student.response.dto'
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate'
 import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
@@ -124,6 +124,15 @@ export class StudentsService {
         })
       if (haveEnrollmentNumberCadastred) {
         throw new BadRequestException('Enrollment Number already registered')
+      }
+
+      if (
+        student.scholarship.scholarship_starts_at >=
+        student.scholarship.scholarship_ends_at
+      ) {
+        throw new BadRequestException(
+          'Scholarship start date must be before the end date'
+        )
       }
 
       const passwordHash = await hashPassword(student.password)
