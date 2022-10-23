@@ -34,6 +34,8 @@ export class PasswordRecoveryService {
     dto: PasswordRecoveryRequestDto
   ): Promise<void> {
     const payload = { email: dto.email }
+    // This will throw NotFoundException if user not exist
+    await this.studentsService.findByEmail(dto.email)
     const newPassword = this.generateRandomString(8)
     this.studentsService.updatePassword(dto.email, newPassword)
     const token = this.jwtService.sign(payload)
