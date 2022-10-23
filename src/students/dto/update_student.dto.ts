@@ -10,21 +10,15 @@ import {
   IsOptional,
   IsPhoneNumber,
   Contains,
-  IsObject,
-  ValidateNested,
-  IsDefined,
-  IsNotEmptyObject,
   MinLength,
   MaxLength
 } from 'class-validator'
-import { CreateScholarshipDto } from '../../scholarship/dto/create-scholarship.dto'
 
 const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
 
-export class CreateStudentDTO {
+export class UpdateStudentDTO {
   constructor(
     tax_id: string,
-    enrollment_number: string,
     name: string,
     email: string,
     course: string,
@@ -33,11 +27,9 @@ export class CreateStudentDTO {
     enrollment_date_pgcomp: Date,
     phone_number: string,
     password: string,
-    role: string,
-    scholarship: CreateScholarshipDto
+    role: string
   ) {
     this.tax_id = tax_id
-    this.enrollment_number = enrollment_number
     this.name = name
     this.email = email
     this.course = course
@@ -47,7 +39,6 @@ export class CreateStudentDTO {
     this.phone_number = phone_number
     this.password = password
     this.role = role
-    this.scholarship = scholarship
   }
 
   @IsString()
@@ -56,10 +47,6 @@ export class CreateStudentDTO {
     message: 'Tax ID must be in the format 000.000.000-00'
   })
   readonly tax_id: string
-
-  @IsString()
-  @Length(9, 9)
-  readonly enrollment_number: string
 
   @IsString()
   readonly name: string
@@ -102,11 +89,4 @@ export class CreateStudentDTO {
   @Type(() => Date)
   @IsDate()
   readonly defense_prediction: Date
-
-  @ValidateNested({ each: true })
-  @IsObject()
-  @IsDefined()
-  @IsNotEmptyObject()
-  @Type(() => CreateScholarshipDto)
-  readonly scholarship: CreateScholarshipDto
 }

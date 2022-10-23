@@ -63,6 +63,6 @@ export class StudentsController {
 
   @Patch()
   async updateStudent(@Body() student: CreateStudentDTO) {
-    return this.studentsService.updateStudent(student) // TODO : update student
+    return this.studentsService.updateStudent(student)
   }
 }
