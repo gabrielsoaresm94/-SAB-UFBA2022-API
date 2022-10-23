@@ -17,6 +17,7 @@ import { PageDto } from '../../pageable/page.dto'
 import { PageMetaDto } from '../../pageable/page-meta.dto'
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 import { AdvisorService } from '../../advisor/service/advisor.service'
+import { UpdateStudentDTO } from '../dto/update_student.dto'
 
 @Injectable()
 export class StudentsService {
@@ -155,7 +156,7 @@ export class StudentsService {
     await this.studentRepository.update({ email }, { password: passwordHash })
   }
 
-  async updateStudent(student: CreateStudentDTO) {
+  async updateStudent(student: UpdateStudentDTO) {
     if (student.password) {
       student.password = await hashPassword(student.password)
     }
