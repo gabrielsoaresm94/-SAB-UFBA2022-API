@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common'
 import { CreateStudentDTO } from '../dto/student.dto.input'
 import { ResponseStudentDTO } from '../dto/student.response.dto'
+import { UpdateStudentDTO } from '../dto/update_student.dto'
 import { StudentsService } from '../service/students.service'
 
 @Controller('v1/students')
@@ -62,7 +63,7 @@ export class StudentsController {
   }
 
   @Patch()
-  async updateStudent(@Body() student: CreateStudentDTO) {
+  async updateStudent(@Body() student: UpdateStudentDTO) {
     return this.studentsService.updateStudent(student)
   }
 }
