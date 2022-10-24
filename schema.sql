@@ -70,3 +70,6 @@ ADD CONSTRAINT fk_students_advisor FOREIGN KEY (advisor_id) REFERENCES advisor (
 
 ALTER TABLE student
 ALTER COLUMN enrollment_number TYPE varchar(10)
+
+ALTER TABLE scholarship
+ADD CONSTRAINT fk_agency_id FOREIGN KEY (agency_id) REFERENCES agency (id);
