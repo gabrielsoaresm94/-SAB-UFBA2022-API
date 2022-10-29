@@ -68,4 +68,25 @@ export class ScholarshipService {
       { scholarship_ends_at: newFinalDate.newFinalDate }
     )
   }
+
+  async findOneByStudentId(id: number): Promise<ResponseScholarshipDto> {
+    const scholarship = await this.scholarshipRepository.find({
+      where: { student_id: id },
+      relations: {
+        student: true
+      }
+    })
+    if (!scholarship || scholarship.length === 0) {
+      throw new NotFoundException('Scholarship not found')
+    }
+
+    return toScholarshipDTO(scholarship[0])
+  }
+
+  async deleteById(id: number) {
+    const scholarship = await this.scholarshipRepository.findOneBy({ id })
+    if (!scholarship) throw new NotFoundException('Scholarship not found')
+
+    this.scholarshipRepository.delete({ id })
+  }
 }
