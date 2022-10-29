@@ -8,7 +8,7 @@ import {
   ManyToOne
 } from 'typeorm'
 import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
-import { AgencyEntity } from 'src/agency/entities/agency.entity'
+import { AgencyEntity } from '../../agency/entities/agency.entity'
 
 @Entity('scholarship')
 export class Scholarship {
