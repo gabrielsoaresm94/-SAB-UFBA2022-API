@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Scholarship } from 'src/scholarship/entities/scholarship.entity'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { ResponseAgencyDto } from '../dto/response-agency.dto'
 
 @Entity('agency')
@@ -7,6 +8,9 @@ export class AgencyEntity {
 
   @Column({ nullable: false }) name: string
   @Column({ nullable: false }) description: string
+
+  @OneToMany(() => Scholarship, (scholarship) => scholarship.agency)
+  scholarships: Scholarship[]
 }
 
 export function toAgencyResponseDto(agency: AgencyEntity): ResponseAgencyDto {

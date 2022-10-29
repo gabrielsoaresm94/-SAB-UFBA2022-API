@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { CreateAgencyDto } from '../dto/create-agency.dto'
 import { AgencyService } from '../service/agency.service'
-@Controller('v1/article')
+@Controller('v1/agency')
 export class AgencyController {
   constructor(private readonly agencyService: AgencyService) {}
 
