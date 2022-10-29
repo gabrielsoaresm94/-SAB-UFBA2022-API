@@ -45,28 +45,6 @@ export class ScholarshipService {
     return toScholarshipDTO(scholarship[0])
   }
 
-  getDatePlustDays(days: number): Date {
-    const actualDate = new Date()
-    actualDate.setDate(actualDate.getDate() + days)
-    return actualDate
-  }
-
-  async getNeedsNotifyScolarships(): Promise<Scholarship[]> {
-    return await this.scholarshipRepository
-      .createQueryBuilder('scholarship')
-      .innerJoin('scholarship.student', 'student')
-      .where('scholarship.scholarship_ends_at = :date', {
-        date: this.getDatePlustDays(30)
-      })
-      .orWhere('scholarship.scholarship_ends_at = :date', {
-        date: this.getDatePlustDays(60)
-      })
-      .orWhere('scholarship.scholarship_ends_at = :date', {
-        date: this.getDatePlustDays(90)
-      })
-      .getMany()
-  }
-
   async updateFinalDateScholarship(
     newFinalDate: NewFinalDateScholarshipDto,
     id: number
