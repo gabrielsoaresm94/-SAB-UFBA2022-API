@@ -3,7 +3,7 @@ export class ResponseScholarshipDto {
     id: number,
     student: number,
     agency_id: number,
-    scholarship_start_at: Date,
+    scholarship_starts_at: Date,
     scholarship_ends_at: Date,
     extension_ends_at: Date,
     salary: number,
@@ -13,7 +13,7 @@ export class ResponseScholarshipDto {
     this.id = id
     this.student = student
     this.agency_id = agency_id
-    this.scholarship_start_at = scholarship_start_at
+    this.scholarship_starts_at = scholarship_starts_at
     this.scholarship_ends_at = scholarship_ends_at
     this.extension_ends_at = extension_ends_at
     this.salary = salary
@@ -23,7 +23,7 @@ export class ResponseScholarshipDto {
   readonly id: number
   readonly student: number
   readonly agency_id: number
-  readonly scholarship_start_at: Date
+  readonly scholarship_starts_at: Date
   readonly scholarship_ends_at: Date
   readonly extension_ends_at: Date
   readonly salary: number

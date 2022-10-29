@@ -1,10 +1,24 @@
-import { Type } from 'class-transformer'
-import { IsString, IsEmail, IsUrl, IsDate, IsNumber } from 'class-validator'
+import { Transform, Type } from 'class-transformer'
+import {
+  IsString,
+  IsEmail,
+  IsUrl,
+  IsDate,
+  IsNumber,
+  Length,
+  Matches,
+  IsOptional,
+  IsPhoneNumber,
+  Contains,
+  MinLength,
+  MaxLength
+} from 'class-validator'
 
-export class CreateStudentDTO {
+const REGEX_TAX_ID = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/
+
+export class UpdateStudentDTO {
   constructor(
     tax_id: string,
-    enrolment_number: string,
     name: string,
     email: string,
     course: string,
@@ -16,7 +30,6 @@ export class CreateStudentDTO {
     role: string
   ) {
     this.tax_id = tax_id
-    this.enrolment_number = enrolment_number
     this.name = name
     this.email = email
     this.course = course
@@ -29,10 +42,11 @@ export class CreateStudentDTO {
   }
 
   @IsString()
+  @Length(14, 14)
+  @Matches(REGEX_TAX_ID, {
+    message: 'Tax ID must be in the format 000.000.000-00'
+  })
   readonly tax_id: string
-
-  @IsString()
-  readonly enrolment_number: string
 
   @IsString()
   readonly name: string
@@ -41,6 +55,12 @@ export class CreateStudentDTO {
   readonly email: string
 
   @IsString()
+  @MinLength(8, {
+    message: 'Course only is Doutorado or Mestrado'
+  })
+  @MaxLength(9, {
+    message: 'Course only is Doutorado or Mestrado'
+  })
   readonly course: string
 
   @IsUrl()
@@ -54,11 +74,19 @@ export class CreateStudentDTO {
   readonly enrollment_date_pgcomp: Date
 
   @IsString()
+  @IsPhoneNumber('BR')
   readonly phone_number: string
 
   @IsString()
-  readonly password: string
+  password: string
 
   @IsString()
+  @Transform(({ value }) => value.toUpperCase())
+  @Contains('STUDENT')
   readonly role: string
+
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  readonly defense_prediction: Date
 }

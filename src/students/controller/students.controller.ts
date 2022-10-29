@@ -5,19 +5,34 @@ import {
   Param,
   Patch,
   Post,
+  DefaultValuePipe,
+  ParseIntPipe,
   Query
 } from '@nestjs/common'
-import { CreateStudentDTO } from '../model/student.dto.input'
-import { ResponseStudentDTO } from '../model/student.response.dto'
+import { CreateStudentDTO } from '../dto/student.dto.input'
+import { ResponseStudentDTO } from '../dto/student.response.dto'
+import { UpdateStudentDTO } from '../dto/update_student.dto'
 import { StudentsService } from '../service/students.service'
 
 @Controller('v1/students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
-  @Get('/list/all')
+  @Get('/not-paginate/list/all')
   async findAllStudents() {
     return await this.studentsService.findAllStudents()
+  }
+
+  @Get('/list/all')
+  async paginate(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10
+  ) {
+    limit = limit > 100 ? 100 : limit
+    return await this.studentsService.findAllStudentsPaginate({
+      page,
+      limit
+    })
   }
 
   @Get('find/byid/:id')
@@ -48,7 +63,7 @@ export class StudentsController {
   }
 
   @Patch()
-  async updateStudent(@Body() student: CreateStudentDTO) {
-    return this.studentsService.updateStudent(student) // TODO : update student
+  async updateStudent(@Body() student: UpdateStudentDTO) {
+    return this.studentsService.updateStudent(student)
   }
 }

@@ -6,8 +6,10 @@ import { getRepositoryToken } from '@nestjs/typeorm'
 import { StudentEntity } from '../../students/entities/students.entity'
 import { JwtModule } from '@nestjs/jwt'
 import { jwtConstants } from '../constants'
-import { CreateStudentDTO } from '../../students/model/student.dto.input'
+import { CreateStudentDTO } from '../../students/dto/student.dto.input'
 import { NotFoundException } from '@nestjs/common'
+import { Advisor } from '../../advisor/entities/advisor.entity'
+import { Admin } from '../../admin/entities/admin.entity'
 
 describe('User Login Service', () => {
   let authService: AuthService
@@ -24,8 +26,13 @@ describe('User Login Service', () => {
       providers: [
         UserService,
         AuthService,
+        { provide: getRepositoryToken(Advisor), useValue: mockRepository },
         {
           provide: getRepositoryToken(StudentEntity),
+          useValue: mockRepository
+        },
+        {
+          provide: getRepositoryToken(Admin),
           useValue: mockRepository
         }
       ],
@@ -67,7 +74,17 @@ describe('User Login Service', () => {
       new Date(),
       '999999999',
       '1234',
-      'STUDENT'
+      'STUDENT',
+      {
+        student_id: 1,
+        agency_id: 1,
+        scholarship_starts_at: new Date(),
+        scholarship_ends_at: new Date(),
+        extension_ends_at: new Date(),
+        salary: 1000,
+        active: true,
+        model: 'model'
+      }
     )
     const user = '123456789'
     const password = '12341'

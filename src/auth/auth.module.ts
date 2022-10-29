@@ -10,18 +10,31 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { StudentEntity } from '../students/entities/students.entity'
 import { AuthController } from './controller/auth.controller'
 import { JwtStrategy } from './strategy/jwt.strategy'
+import { Advisor } from '../advisor/entities/advisor.entity'
+import { AdminModule } from '../admin/admin.module'
+import { AdvisorModule } from '../advisor/advisor.module'
+import { Admin } from '../admin/entities/admin.entity'
+import { AdminService } from '../admin/service/admin.service'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([StudentEntity]),
+    TypeOrmModule.forFeature([StudentEntity, Advisor, Admin]),
     UserModule,
     PassportModule,
+    AdminModule,
+    AdvisorModule,
     JwtModule.register({
       secret: jwtConstants.secretKey,
       signOptions: { expiresIn: jwtConstants.expirationTime }
     })
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UserService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    UserService,
+    AdminService
+  ],
   controllers: [AuthController],
   exports: [AuthService]
 })

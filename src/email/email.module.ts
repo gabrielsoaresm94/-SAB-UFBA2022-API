@@ -26,12 +26,13 @@ import { EmailService } from './service/email.service'
           dir: join(__dirname, './templates'),
           adapter: new HandlebarsAdapter(),
           options: {
-            strict: true
+            strict: false
           }
         }
       })
     })
   ],
-  providers: [EmailService]
+  providers: [EmailService],
+  exports: [EmailService]
 })
 export class EmailModule {}

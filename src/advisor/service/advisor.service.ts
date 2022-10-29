@@ -47,9 +47,20 @@ export class AdvisorService {
     return toAdvisorDTO(advisor)
   }
 
+  async findOneByTaxId(tax_id: string) {
+    const advisor = await this.advisorRepository.findOneBy({ tax_id })
+    if (!advisor) throw new NotFoundException('Advisor not found')
+    return toAdvisorDTO(advisor)
+  }
+
   // update(id: number, updateAdvisorDto: UpdateAdvisorDto) {
   //   return `This action updates a #${id} advisor`
   // }
+
+  async updatePassword(email: string, password: string) {
+    const passwordHash = await hashPassword(password)
+    await this.advisorRepository.update({ email }, { password: passwordHash })
+  }
 
   async remove(id: number) {
     const removed = await this.advisorRepository.delete(id)

@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
 import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
+import { NewFinalDateScholarshipDto } from '../dto/update-scholarship.dto'
 import { Scholarship, toScholarshipDTO } from '../entities/scholarship.entity'
 
 @Injectable()
@@ -17,19 +18,16 @@ export class ScholarshipService {
   ) {}
 
   async create(createScholarshipDto: CreateScholarshipDto) {
-    try {
-      return await this.scholarshipRepository.save(createScholarshipDto)
-    } catch (error) {
-      return new BadRequestException(error.message)
-    }
+    return await this.scholarshipRepository.save(createScholarshipDto)
   }
 
   async findAll(): Promise<ResponseScholarshipDto[]> {
     const scholarships: Scholarship[] = await this.scholarshipRepository.find({
       relations: {
-        student_id: true
+        student: true
       }
     })
+
     return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
 
@@ -37,7 +35,7 @@ export class ScholarshipService {
     const scholarship = await this.scholarshipRepository.find({
       where: { id: id },
       relations: {
-        student_id: true
+        student: true
       }
     })
     if (!scholarship || scholarship.length === 0) {
@@ -45,5 +43,29 @@ export class ScholarshipService {
     }
 
     return toScholarshipDTO(scholarship[0])
+  }
+
+  async updateFinalDateScholarship(
+    newFinalDate: NewFinalDateScholarshipDto,
+    id: number
+  ) {
+    const scholarship = await this.scholarshipRepository.findOneBy({ id })
+    if (!scholarship) throw new NotFoundException('Scholarship not found')
+
+    if (newFinalDate.newFinalDate < scholarship.scholarship_starts_at) {
+      throw new BadRequestException(
+        'Scholarship new end date must be after the start date'
+      )
+    }
+
+    if (newFinalDate.newFinalDate <= scholarship.scholarship_ends_at) {
+      throw new BadRequestException(
+        'Scholarship new end date must be after the current end date'
+      )
+    }
+    this.scholarshipRepository.update(
+      { id },
+      { scholarship_ends_at: newFinalDate.newFinalDate }
+    )
   }
 }

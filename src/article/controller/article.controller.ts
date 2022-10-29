@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { CreateArticleDto } from '../dto/create-article.dto'
+
 @Controller('v1/article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
@@ -28,5 +29,10 @@ export class ArticleController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.articleService.remove(+id)
+  }
+
+  @Get('/generate-pdf')
+  async xml() {
+    return this.articleService.generatePDF()
   }
 }

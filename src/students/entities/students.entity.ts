@@ -5,24 +5,25 @@ import {
 import {
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { ResponseStudentDTO } from '../model/student.response.dto'
+import { ResponseStudentDTO } from '../dto/student.response.dto'
 import { Scholarship } from '../../scholarship/entities/scholarship.entity'
+import { User } from '../../user/interface/user.interface'
+import { Advisor } from '../../advisor/entities/advisor.entity'
 
 @Entity('student')
-export class StudentEntity {
+export class StudentEntity implements User {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column({ length: 14, nullable: false, unique: true })
   tax_id: string
 
-  @Column({ length: 9, nullable: false, unique: true })
-  enrolment_number: string
+  @Column({ length: 10, nullable: false, unique: true })
+  enrollment_number: string
 
   @Column({ nullable: false })
   name: string
@@ -39,7 +40,7 @@ export class StudentEntity {
   @Column()
   advisor_id: number
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, type: 'date' })
   enrollment_date_pgcomp: Date
 
   @Column({ length: 11, nullable: false })
@@ -54,9 +55,14 @@ export class StudentEntity {
   @OneToMany(() => ArticleEntity, (article) => article.student)
   articles: ArticleEntity[]
 
-  @OneToOne(() => Scholarship)
-  @JoinColumn()
+  @OneToOne(() => Scholarship, (scholarship) => scholarship.student)
   scolarship: Scholarship
+
+  @OneToOne(() => Advisor, (advisor) => advisor.student)
+  advisor: Advisor
+
+  @Column()
+  defense_prediction: Date
 }
 
 export function toStudentResponseDTO(
@@ -65,15 +71,17 @@ export function toStudentResponseDTO(
   return new ResponseStudentDTO(
     student.id,
     student.tax_id,
-    student.enrolment_number,
+    student.enrollment_number,
     student.name,
     student.email,
     student.course,
     student.link_lattes,
     student.advisor_id,
     student.enrollment_date_pgcomp,
+    student.defense_prediction,
     student.phone_number,
     student.role,
-    student.articles.map((article) => toArticleResponseDTO(article))
+    student.articles.map((article) => toArticleResponseDTO(article)),
+    student.scolarship
   )
 }
