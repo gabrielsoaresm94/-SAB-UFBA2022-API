@@ -7,7 +7,9 @@ import {
   Post,
   DefaultValuePipe,
   ParseIntPipe,
-  Query
+  Query,
+  Delete,
+  HttpCode
 } from '@nestjs/common'
 import { CreateStudentDTO } from '../dto/student.dto.input'
 import { ResponseStudentDTO } from '../dto/student.response.dto'
@@ -65,5 +67,11 @@ export class StudentsController {
   @Patch()
   async updateStudent(@Body() student: UpdateStudentDTO) {
     return this.studentsService.updateStudent(student)
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async deleteStudent(@Param('id') id: number) {
+    return this.studentsService.deleteStudent(id)
   }
 }
