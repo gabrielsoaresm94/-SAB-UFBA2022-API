@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, StreamableFile, Response, Header } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { CreateArticleDto } from '../dto/create-article.dto'
 
@@ -32,7 +32,10 @@ export class ArticleController {
   }
 
   @Get('/generate-pdf')
-  async xml() {
-    return this.articleService.generatePDF()
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'attachment; filename="relatorio.pdf"')
+  async generateReport() : Promise<StreamableFile> {
+    const doc = await this.articleService.generatePDF()
+    return new StreamableFile(doc);
   }
 }

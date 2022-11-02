@@ -7,6 +7,7 @@ import { ResponseArticleDTO } from '../dto/response-article.dto'
 import { ArticleEntity, toArticleResponseDTO } from '../entities/article.entity'
 import { StudentsService } from '../../students/service/students.service'
 import { AdvisorService } from '../../advisor/service/advisor.service'
+import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 const PDFKit = require('pdfkit')
 const fs = require('fs')
 
@@ -65,7 +66,7 @@ export class ArticleService {
     return dayFormatted+'/'+monthFormatted+'/'+year;
   }
 
-  async generatePDF() : PDFKit {
+  async generatePDF() {
     const doc = new PDFKit({size: 'A4'})
     doc.fontSize(25)
     doc.text('Relatório de bolsas alocadas', { align: 'center' })
@@ -76,16 +77,24 @@ export class ArticleService {
       doc.moveDown(2)
       doc.fontSize(12)
       doc.text('Nome: ' + student.name)
-      doc.text('Matrícula: ' + student.enrollment_number + '        Curso: ' + student.course).fontSize(12)
-      doc.text('Email: ' + student.email + '        Contato: ' + student.phone_number).fontSize(12)
+      doc.text('Matrícula: ' + student.enrollment_number)
+      doc.text('Curso: ' + student.course).fontSize(12)
+      doc.text('Email: ' + student.email)
+      doc.text('Telefone: ' + student.phone_number).fontSize(12)
       const enrollment_date = await this.formatterDate(student.enrollment_date_pgcomp.toString())
       const defense_date = await this.formatDate(student.defense_prediction)
-      doc.text('Data de início no PGCOMP: ' + enrollment_date + '     Data prevista de defesa: ' + defense_date).fontSize(12)
+      doc.text('Data de início no PGCOMP: ' + enrollment_date + '           Data prevista de defesa: ' + defense_date).fontSize(12)
       const advisor = await this.advisorService.findOneById(student.advisor_id)
-      doc.text('Orientador(a): ' + advisor.name + '     Email do(a) orientador(a): ' + advisor.email).fontSize(12)
+
+      doc.text('Orientador(a): ' + advisor.name)
+      doc.text('Email do(a) orientador(a): ' + advisor.email).fontSize(12)
       doc.moveDown(2)
       if (student.articles.length > 0){
-      doc.text('Artigos publicados:').fontSize(12)
+        if(student.articles.length == 1){
+          doc.text('Artigo publicado: ').fontSize(12)
+        }else{
+          doc.text('Artigos publicados:').fontSize(12)
+        }
       doc.moveDown()
       for (let i = 0; i < student.articles.length; i++) {
         doc.fontSize(10)
@@ -101,7 +110,7 @@ export class ArticleService {
     }
     doc.moveDown(2)
     doc.lineWidth(5)
-    doc.lineCap('butt').moveTo(doc.x + 0, doc.y).lineTo(doc.x + 550, doc.y).stroke();
+    doc.lineCap('butt').moveTo(doc.x, doc.y).lineTo(doc.x + 450, doc.y).stroke();
     }
     doc.pipe(fs.createWriteStream('relatorio.pdf'))
     doc.end()
