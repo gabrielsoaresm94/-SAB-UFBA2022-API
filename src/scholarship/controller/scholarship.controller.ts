@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  BadRequestException
-} from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common'
 import { ScholarshipService } from '../service/scholarship.service'
 import { CreateScholarshipDto } from '../dto/create-scholarship.dto'
 import { NewFinalDateScholarshipDto } from '../dto/update-scholarship.dto'
@@ -35,5 +28,15 @@ export class ScholarshipController {
     @Body() newFinalDate: NewFinalDateScholarshipDto
   ) {
     return this.scholarshipService.updateFinalDateScholarship(newFinalDate, id)
+  }
+
+  @Get('/student/:id')
+  findOneByStudentID(@Param('id') id: string) {
+    return this.scholarshipService.findOneById(+id)
+  }
+
+  @Delete('/student/:id')
+  deleteById(@Param('id') id: string) {
+    return this.scholarshipService.deleteById(+id)
   }
 }
