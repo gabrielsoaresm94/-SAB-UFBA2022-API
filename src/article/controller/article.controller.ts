@@ -1,6 +1,8 @@
-import { Controller, Get, Post, Body, Param, Delete, StreamableFile, Response, Header } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, Res } from '@nestjs/common'
 import { ArticleService } from '../service/article.service'
 import { CreateArticleDto } from '../dto/create-article.dto'
+import { Response } from 'express'
+const moment = require('moment')
 
 @Controller('v1/article')
 export class ArticleController {
@@ -32,10 +34,17 @@ export class ArticleController {
   }
 
   @Get('/generate-pdf')
-  @Header('Content-Type', 'application/pdf')
-  @Header('Content-Disposition', 'attachment; filename="relatorio.pdf"')
-  async generateReport() : Promise<StreamableFile> {
+  async generateReport(@Res() response: Response): Promise<void> {
     const doc = await this.articleService.generatePDF()
-    return new StreamableFile(doc);
+    const filename =
+      'RELATORIO DE BOLSAS ATUALIZADO EM ' +
+      moment().format('DD-MM-yy hh:mm:ss') +
+      '.pdf'
+    response.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename="' + filename + '"',
+      'Content-Length': doc.length
+    })
+    response.end(doc)
   }
 }
