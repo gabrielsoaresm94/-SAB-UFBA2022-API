@@ -56,6 +56,9 @@ export class ArticleService {
     return arrayDate[2] + '/' + arrayDate[1] + '/' + arrayDate[0]
   }
   async formatDate(date: Date) {
+    if (date == null) {
+      return 'Sem previsão'
+    }
     const day = date.getDate().toString()
     const dayFormatted = day.length == 1 ? '0' + day : day
     const month = (date.getMonth() + 1).toString()
@@ -68,14 +71,14 @@ export class ArticleService {
     const pdfBuffer: Buffer = await new Promise(async (resolve) => {
       const doc = new PDFKit({ size: 'A4' })
       doc.fontSize(25)
-      doc.text('Relatório de bolsas alocadas', { align: 'center' })
+      doc.font('Times-Roman').text('Relatório de bolsas alocadas', { align: 'center' })
       doc.lineWidth(15)
       doc.lineCap('butt').moveTo(50, 120).lineTo(550, 120).stroke()
       const students = await this.studentService.findAllStudents()
       for (const student of students) {
         doc.moveDown(2)
         doc.fontSize(12)
-        doc.text('Nome: ' + student.name)
+        doc.font('Times-Roman').text('Nome: ' + student.name)
         doc.text('Matrícula: ' + student.enrollment_number)
         doc.text('Curso: ' + student.course).fontSize(12)
         doc.text('Email: ' + student.email)
@@ -88,16 +91,52 @@ export class ArticleService {
           .text(
             'Data de início no PGCOMP: ' +
               enrollment_date +
-              '           Data prevista de defesa: ' +
+              '           Data de defesa: ' +
               defense_date
           )
           .fontSize(12)
-        const advisor = await this.advisorService.findOneById(
-          student.advisor_id
-        )
+        if (student.scholarship == null){
+          doc.font('Times-Bold').text('Estudante sem bolsa de pesquisa', {align:'center'})
 
-        doc.text('Orientador(a): ' + advisor.name)
-        doc.text('Email do(a) orientador(a): ' + advisor.email).fontSize(12)
+        } else{
+          doc.fontSize(12)
+          const scholarship_start = await this.formatDate(
+            student.scholarship.scholarship_starts_at
+          )
+          const scholarship_end = await this.formatDate(
+            student.scholarship.scholarship_ends_at
+          )
+          doc
+            .text(
+              'Data de início da bolsa: ' +
+                scholarship_start +
+                '                   Data de fim da bolsa: ' +
+                scholarship_end
+            )
+            .fontSize(12)
+          if (
+            student.scholarship.extension_ends_at.getTime() ==
+            student.scholarship.scholarship_ends_at.getTime()
+          ) {
+            doc.font('Times-Bold').text('Sem extensão de bolsa cadastrada', {align:'center'})
+          } else {
+            doc.font('Times-Bold').text(
+              'Bolsa extendida até: ' +
+                (await this.formatDate(student.scholarship.extension_ends_at)), {align:'center'}
+            )
+          }
+        }
+        doc.fontSize(12)
+        if (student.advisor_id != null) {
+          const advisor = await this.advisorService.findOneById(
+            student.advisor_id
+          )
+
+          doc.font('Times-Roman').text('Orientador(a): ' + advisor.name)
+          doc.text('Email do(a) orientador(a): ' + advisor.email).fontSize(12)
+        } else {
+          doc.text('Estudante sem orientador(a)')
+        }
         doc.moveDown(2)
         if (student.articles.length > 0) {
           if (student.articles.length == 1) {
