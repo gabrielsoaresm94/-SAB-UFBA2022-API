@@ -115,6 +115,7 @@ export class ArticleService {
             )
             .fontSize(12)
           if (
+            student.scholarship.extension_ends_at == null ||
             student.scholarship.extension_ends_at.getTime() ==
             student.scholarship.scholarship_ends_at.getTime()
           ) {
