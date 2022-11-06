@@ -71,7 +71,9 @@ export class ArticleService {
     const pdfBuffer: Buffer = await new Promise(async (resolve) => {
       const doc = new PDFKit({ size: 'A4' })
       doc.fontSize(25)
-      doc.font('Times-Roman').text('Relatório de bolsas alocadas', { align: 'center' })
+      doc
+        .font('Times-Roman')
+        .text('Relatório de bolsas alocadas', { align: 'center' })
       doc.lineWidth(15)
       doc.lineCap('butt').moveTo(50, 120).lineTo(550, 120).stroke()
       const students = await this.studentService.findAllStudents()
@@ -95,10 +97,11 @@ export class ArticleService {
               defense_date
           )
           .fontSize(12)
-        if (student.scholarship == null){
-          doc.font('Times-Bold').text('Estudante sem bolsa de pesquisa', {align:'center'})
-
-        } else{
+        if (student.scholarship == null) {
+          doc
+            .font('Times-Bold')
+            .text('Estudante sem bolsa de pesquisa', { align: 'center' })
+        } else {
           doc.fontSize(12)
           const scholarship_start = await this.formatDate(
             student.scholarship.scholarship_starts_at
@@ -117,14 +120,21 @@ export class ArticleService {
           if (
             student.scholarship.extension_ends_at == null ||
             student.scholarship.extension_ends_at.getTime() ==
-            student.scholarship.scholarship_ends_at.getTime()
+              student.scholarship.scholarship_ends_at.getTime()
           ) {
-            doc.font('Times-Bold').text('Sem extensão de bolsa cadastrada', {align:'center'})
+            doc
+              .font('Times-Bold')
+              .text('Sem extensão de bolsa cadastrada', { align: 'center' })
           } else {
-            doc.font('Times-Bold').text(
-              'Bolsa extendida até: ' +
-                (await this.formatDate(student.scholarship.extension_ends_at)), {align:'center'}
-            )
+            doc
+              .font('Times-Bold')
+              .text(
+                'Bolsa extendida até: ' +
+                  (await this.formatDate(
+                    student.scholarship.extension_ends_at
+                  )),
+                { align: 'center' }
+              )
           }
         }
         doc.fontSize(12)
