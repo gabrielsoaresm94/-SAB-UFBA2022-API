@@ -145,7 +145,6 @@ export class StudentsService {
       const savedStudent = await this.studentRepository.save(newStudent)
       const toSaveScholarship = student.scholarship
       toSaveScholarship.student_id = savedStudent.id
-      console.log(toSaveScholarship)
       await this.scholarshipService.create(toSaveScholarship)
     } catch (error) {
       throw new BadRequestException(error.message)
@@ -165,6 +164,17 @@ export class StudentsService {
       { tax_id: student.tax_id },
       { ...student }
     )
+  }
+
+  async deleteStudent(id: number) {
+    const student = await this.studentRepository.findOne({
+      where: { id }
+    })
+    if (!student) throw new NotFoundException('Student not found')
+    const scholarship = await this.scholarshipService.findOneByStudentId(id)
+    if (!scholarship) throw new NotFoundException('Scholarship not found')
+    await this.scholarshipService.deleteById(scholarship.id)
+    await this.studentRepository.delete(id)
   }
 
   async validateInput(data: ValidateInput) {
