@@ -68,4 +68,15 @@ export class AdvisorService {
 
     throw new NotFoundException('Advisor not found')
   }
+
+  async validateAdvisor(tax_id: string, email: string) {
+    const advisorTax_id = await this.advisorRepository.findOneBy({ tax_id })
+    if (advisorTax_id)
+      throw new BadRequestException('Tax ID already registered')
+
+    const advisor_email = await this.advisorRepository.findOneBy({ email })
+    if (advisor_email) {
+      throw new BadRequestException('Email already registered')
+    }
+  }
 }

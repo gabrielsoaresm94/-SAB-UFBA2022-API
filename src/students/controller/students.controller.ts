@@ -7,11 +7,13 @@ import {
   Post,
   DefaultValuePipe,
   ParseIntPipe,
-  Query
+  Query,
+  HttpCode
 } from '@nestjs/common'
 import { CreateStudentDTO } from '../dto/student.dto.input'
 import { ResponseStudentDTO } from '../dto/student.response.dto'
 import { UpdateStudentDTO } from '../dto/update_student.dto'
+import { ValidateInput } from '../dto/validate_data.input'
 import { StudentsService } from '../service/students.service'
 
 @Controller('v1/students')
@@ -65,5 +67,11 @@ export class StudentsController {
   @Patch()
   async updateStudent(@Body() student: UpdateStudentDTO) {
     return this.studentsService.updateStudent(student)
+  }
+
+  @Get('/validate')
+  @HttpCode(204)
+  async validateInput(@Body() data: ValidateInput) {
+    return await this.studentsService.validateInput(data)
   }
 }

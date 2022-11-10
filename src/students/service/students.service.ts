@@ -18,6 +18,7 @@ import { PageMetaDto } from '../../pageable/page-meta.dto'
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 import { AdvisorService } from '../../advisor/service/advisor.service'
 import { UpdateStudentDTO } from '../dto/update_student.dto'
+import { ValidateInput } from '../dto/validate_data.input'
 
 @Injectable()
 export class StudentsService {
@@ -164,5 +165,30 @@ export class StudentsService {
       { tax_id: student.tax_id },
       { ...student }
     )
+  }
+
+  async validateInput(data: ValidateInput) {
+    const haveEmailCadastred = await this.studentRepository.findOne({
+      where: { email: data.email }
+    })
+    if (haveEmailCadastred) {
+      throw new BadRequestException('Email already registered')
+    }
+
+    const haveTaxIdCadastred = await this.studentRepository.findOne({
+      where: { tax_id: data.tax_id }
+    })
+    if (haveTaxIdCadastred) {
+      throw new BadRequestException('Tax ID already registered')
+    }
+
+    const haveEnrollmentNumberCadastred = await this.studentRepository.findOne({
+      where: { enrollment_number: data.enrollment_number }
+    })
+    if (haveEnrollmentNumberCadastred) {
+      throw new BadRequestException('Enrollment Number already registered')
+    }
+
+    await this.advisorService.validateAdvisor(data.tax_id, data.email)
   }
 }
