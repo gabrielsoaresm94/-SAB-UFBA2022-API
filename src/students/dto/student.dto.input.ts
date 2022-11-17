@@ -8,7 +8,6 @@ import {
   Length,
   Matches,
   IsOptional,
-  IsPhoneNumber,
   Contains,
   IsObject,
   ValidateNested,
@@ -50,44 +49,65 @@ export class CreateStudentDTO {
     this.scholarship = scholarship
   }
 
-  @IsString()
+  @IsString({
+    message: 'Insira um CPF válido no formato: 000.000.000-00'
+  })
   @Length(14, 14)
   @Matches(REGEX_TAX_ID, {
-    message: 'Tax ID must be in the format 000.000.000-00'
+    message: 'Insira um CPF válido no formato: 000.000.000-00'
   })
   readonly tax_id: string
 
-  @IsString()
-  @Length(9, 9)
+  @IsString({
+    message: 'Insira um número de matrícula válido de 9 dígitos'
+  })
+  @Length(9, 9, {
+    message: 'Insira um número de matrícula válido de 9 dígitos'
+  })
   readonly enrollment_number: string
 
-  @IsString()
+  @IsString({
+    message: 'Insira um nome válido'
+  })
   readonly name: string
 
-  @IsEmail()
+  @IsEmail(
+    {},
+    {
+      message: 'Insira um email válido'
+    }
+  )
   readonly email: string
 
   @IsString()
   @MinLength(8, {
-    message: 'Course only is Doutorado or Mestrado'
+    message: 'Curso deve ser Mestrado ou Doutorado'
   })
   @MaxLength(9, {
-    message: 'Course only is Doutorado or Mestrado'
+    message: 'Curso deve ser Mestrado ou Doutorado'
   })
   readonly course: string
 
-  @IsUrl()
+  @IsUrl(
+    {},
+    {
+      message:
+        'Insira um link lattes válido no formato: http://lattes.cnpq.br/999999999999'
+    }
+  )
   readonly link_lattes: string
 
   @IsNumber()
   readonly advisor_id: number
 
   @Type(() => Date)
-  @IsDate()
+  @IsDate({ message: 'Insira uma data válida' })
   readonly enrollment_date_pgcomp: Date
 
   @IsString()
-  @IsPhoneNumber('BR')
+  @Length(11, 11, {
+    message: 'Insira um número de telefone com 11 dígitos'
+  })
   readonly phone_number: string
 
   @IsString()

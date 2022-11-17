@@ -20,6 +20,15 @@ import { AdvisorService } from '../../advisor/service/advisor.service'
 import { UpdateStudentDTO } from '../dto/update_student.dto'
 import { ValidateInput } from '../dto/validate_data.input'
 
+const EMAIL_ALREADY_REGISTERED = 'Email já cadastrado'
+const TAXID_ALREADY_REGISTERED = 'CPF já cadastrado'
+const ENROLLMENT_NUMBER_ALREADY_REGISTERED = 'Matrícula já cadastrada'
+const DATE_ENROLLMENT_ERROR_DATE =
+  'Data de início de matrícula não deve ser após o final da data'
+const FAIL = 'Erro ao cadastrar'
+const STUDENT_NOT_FOUND = 'Estudante não encontrado'
+const SCHOLARSHIP_NOT_FOUND = 'Bolsa não encontrada'
+
 @Injectable()
 export class StudentsService {
   constructor(
@@ -68,7 +77,7 @@ export class StudentsService {
         id: id
       }
     })
-    if (!student) throw new NotFoundException('Student not found')
+    if (!student) throw new NotFoundException(STUDENT_NOT_FOUND)
     return toStudentResponseDTO(student)
   }
 
@@ -89,7 +98,7 @@ export class StudentsService {
     })
     if (findStudent) return toStudentResponseDTO(findStudent)
 
-    throw new NotFoundException('Student not found')
+    throw new NotFoundException(STUDENT_NOT_FOUND)
   }
 
   async findByAdvisorId(advisor_id: number): Promise<ResponseStudentDTO[]> {
@@ -106,35 +115,39 @@ export class StudentsService {
       const haveEmailCadastred = await this.studentRepository.findOne({
         where: { email: student.email }
       })
+
       if (haveEmailCadastred) {
-        throw new BadRequestException('Email already registered')
+        throw new BadRequestException(EMAIL_ALREADY_REGISTERED)
       }
+
       const advisor = await this.advisorService.findOneById(student.advisor_id)
       const advisorTaxIdEquals = advisor.tax_id === student.tax_id
+
       if (advisorTaxIdEquals) {
-        throw new BadRequestException('Have Advisor Tax ID registered')
+        throw new BadRequestException(TAXID_ALREADY_REGISTERED)
       }
+
       const haveTaxIdCadastred = await this.studentRepository.findOne({
         where: { tax_id: student.tax_id }
       })
+
       if (haveTaxIdCadastred) {
-        throw new BadRequestException('Tax ID already registered')
+        throw new BadRequestException(TAXID_ALREADY_REGISTERED)
       }
       const haveEnrollmentNumberCadastred =
         await this.studentRepository.findOne({
           where: { enrollment_number: student.enrollment_number }
         })
+
       if (haveEnrollmentNumberCadastred) {
-        throw new BadRequestException('Enrollment Number already registered')
+        throw new BadRequestException(ENROLLMENT_NUMBER_ALREADY_REGISTERED)
       }
 
       if (
         student.scholarship.scholarship_starts_at >=
         student.scholarship.scholarship_ends_at
       ) {
-        throw new BadRequestException(
-          'Scholarship start date must be before the end date'
-        )
+        throw new BadRequestException(DATE_ENROLLMENT_ERROR_DATE)
       }
 
       const passwordHash = await hashPassword(student.password)
@@ -147,7 +160,7 @@ export class StudentsService {
       toSaveScholarship.student_id = savedStudent.id
       await this.scholarshipService.create(toSaveScholarship)
     } catch (error) {
-      throw new BadRequestException(error.message)
+      throw new BadRequestException(FAIL)
     }
   }
 
@@ -170,9 +183,9 @@ export class StudentsService {
     const student = await this.studentRepository.findOne({
       where: { id }
     })
-    if (!student) throw new NotFoundException('Student not found')
+    if (!student) throw new NotFoundException(STUDENT_NOT_FOUND)
     const scholarship = await this.scholarshipService.findOneByStudentId(id)
-    if (!scholarship) throw new NotFoundException('Scholarship not found')
+    if (!scholarship) throw new NotFoundException(SCHOLARSHIP_NOT_FOUND)
     await this.scholarshipService.deleteById(scholarship.id)
     await this.studentRepository.delete(id)
   }
@@ -182,21 +195,21 @@ export class StudentsService {
       where: { email: data.email }
     })
     if (haveEmailCadastred) {
-      throw new BadRequestException('Email already registered')
+      throw new BadRequestException(EMAIL_ALREADY_REGISTERED)
     }
 
     const haveTaxIdCadastred = await this.studentRepository.findOne({
       where: { tax_id: data.tax_id }
     })
     if (haveTaxIdCadastred) {
-      throw new BadRequestException('Tax ID already registered')
+      throw new BadRequestException(TAXID_ALREADY_REGISTERED)
     }
 
     const haveEnrollmentNumberCadastred = await this.studentRepository.findOne({
       where: { enrollment_number: data.enrollment_number }
     })
     if (haveEnrollmentNumberCadastred) {
-      throw new BadRequestException('Enrollment Number already registered')
+      throw new BadRequestException(ENROLLMENT_NUMBER_ALREADY_REGISTERED)
     }
 
     await this.advisorService.validateAdvisor(data.tax_id, data.email)
