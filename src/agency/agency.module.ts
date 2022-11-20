@@ -12,6 +12,7 @@ import { AgencyService } from './service/agency.service'
     ScholarshipModule
   ],
   controllers: [AgencyController],
-  providers: [AgencyService]
+  providers: [AgencyService],
+  exports: [AgencyService]
 })
 export class AgencyModule {}
