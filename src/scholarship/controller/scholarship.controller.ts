@@ -36,4 +36,17 @@ export class ScholarshipController {
   ) {
     return this.scholarshipService.updateFinalDateScholarship(newFinalDate, id)
   }
+
+  @Get('/findbyagency/:id')
+  async findByAgency(@Param('id') id_agency: number) {
+    return this.scholarshipService.findByAgencyAndModel(id_agency, '')
+  }
+
+  @Get('/findbyagency/:id/model/:model')
+  async findByAgencyAndModel(
+    @Param('id') id_agency: number,
+    @Param('model') model: string
+  ) {
+    return this.scholarshipService.findByAgencyAndModel(id_agency, model)
+  }
 }

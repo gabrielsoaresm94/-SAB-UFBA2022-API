@@ -68,4 +68,19 @@ export class ScholarshipService {
       { scholarship_ends_at: newFinalDate.newFinalDate }
     )
   }
+  async findByAgencyAndModel(id_agency: number, model: string) {
+    if (!model) {
+      const scholarships = await this.scholarshipRepository.find({
+        relations: { agency: true },
+        where: { agency_id: id_agency }
+      })
+      return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
+    } else {
+      const scholarships = await this.scholarshipRepository.find({
+        relations: { agency: true },
+        where: { agency_id: id_agency, model: model }
+      })
+      return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
+    }
+  }
 }
