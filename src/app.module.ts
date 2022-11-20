@@ -10,6 +10,7 @@ import { AdvisorModule } from './advisor/advisor.module'
 import { ScholarshipModule } from './scholarship/scholarship.module'
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module'
 import { AdminModule } from './admin/admin.module'
+import { AgencyModule } from './agency/agency.module'
 
 require('dotenv')
 
@@ -19,6 +20,7 @@ require('dotenv')
     ConfigModule.forRoot(),
     StudentsModule,
     EmailModule,
+    AgencyModule,
     ArticleModule,
     AuthModule,
     ProfileModule,
