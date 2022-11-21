@@ -11,11 +11,15 @@ import { ScholarshipModule } from './scholarship/scholarship.module'
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module'
 import { AdminModule } from './admin/admin.module'
 import { AgencyModule } from './agency/agency.module'
+import { ScheduleModule } from '@nestjs/schedule'
+import { NotificationModule } from './notification/notification.module'
 
 require('dotenv')
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
+    NotificationModule,
     DatabaseModule,
     ConfigModule.forRoot(),
     StudentsModule,
