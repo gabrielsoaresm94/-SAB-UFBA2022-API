@@ -21,13 +21,17 @@ export class ReportService {
       agency_id,
       true
     )
-    const scholarshipsByAgencyAndCourse: ResponseScholarshipDto[] = []
-    for (const scholarship of scholarships) {
-      const student = await this.studentService.findById(scholarship.student)
-      if (student.course == course)
-        scholarshipsByAgencyAndCourse.push(scholarship)
+    if (course) {
+      const scholarshipsByAgencyAndCourse: ResponseScholarshipDto[] = []
+      for (const scholarship of scholarships) {
+        const student = await this.studentService.findById(scholarship.student)
+        if (student.course == course)
+          scholarshipsByAgencyAndCourse.push(scholarship)
+      }
+      return scholarshipsByAgencyAndCourse
+    } else {
+      return scholarships
     }
-    return scholarshipsByAgencyAndCourse
   }
 
   async formatterDate(date: string) {
