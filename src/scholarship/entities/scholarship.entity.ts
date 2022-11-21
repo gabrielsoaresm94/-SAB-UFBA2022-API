@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  ManyToOne
 } from 'typeorm'
 import { ResponseScholarshipDto } from '../dto/response-scholarship.dto'
+import { AgencyEntity } from '../../agency/entities/agency.entity'
 
 @Entity('scholarship')
 export class Scholarship {
@@ -41,6 +43,10 @@ export class Scholarship {
   @OneToOne(() => StudentEntity, (student) => student.scolarship)
   @JoinColumn({ name: 'student_id' })
   student: StudentEntity
+
+  @ManyToOne(() => AgencyEntity, (agency) => agency.scholarships)
+  @JoinColumn({ name: 'agency_id' })
+  agency: AgencyEntity
 }
 
 export function toScholarshipDTO(
