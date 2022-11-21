@@ -13,6 +13,7 @@ import { AdminModule } from './admin/admin.module'
 import { AgencyModule } from './agency/agency.module'
 import { ScheduleModule } from '@nestjs/schedule'
 import { NotificationModule } from './notification/notification.module'
+import { ReportModule } from './report/report.module'
 
 require('dotenv')
 
@@ -31,7 +32,8 @@ require('dotenv')
     PasswordRecoveryModule,
     AdvisorModule,
     ScholarshipModule,
-    AdminModule
+    AdminModule,
+    ReportModule
   ],
   controllers: [],
   providers: []
