@@ -12,7 +12,8 @@ export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity)
     private articleRepository: Repository<ArticleEntity>,
-    private studentService: StudentsService
+    private studentService: StudentsService,
+    private advisorService: AdvisorService
   ) {}
 
   async create(createArticleDto: CreateArticleDto) {

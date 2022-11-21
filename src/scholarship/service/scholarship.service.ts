@@ -89,6 +89,7 @@ export class ScholarshipService {
 
     this.scholarshipRepository.delete({ id })
   }
+  
   async findByAgencyAndModel(agency_id: number, model: string) {
     if (!model) {
       const scholarships = await this.scholarshipRepository.find({
