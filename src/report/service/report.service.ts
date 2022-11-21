@@ -196,15 +196,16 @@ export class ReportService {
       jsonData[agency.name] = {}
       for (const model of models) {
         const scholarships = await this.findByAgencyAndCourse(agency.id, model)
-        jsonData[agency.name][model] = scholarships.length
-        if (!contByModel[model]) contByModel[model] = 0
-        contByModel[model] += scholarships.length
+        const attribute_name = model.toLowerCase() + '_count'
+        jsonData[agency.name][attribute_name] = scholarships.length
+        if (!contByModel[attribute_name]) contByModel[attribute_name] = 0
+        contByModel[attribute_name] += scholarships.length
         contByAgency += scholarships.length
       }
-      jsonData[agency.name]['Total'] = contByAgency
+      jsonData[agency.name]['total'] = contByAgency
       contByAgency = 0
     }
-    jsonData['Total'] = contByModel
+    jsonData['total'] = contByModel
     return jsonData
   }
 }
