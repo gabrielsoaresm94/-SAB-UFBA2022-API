@@ -14,7 +14,7 @@ import { Scholarship, toScholarshipDTO } from '../entities/scholarship.entity'
 export class ScholarshipService {
   constructor(
     @InjectRepository(Scholarship)
-    private scholarshipRepository: Repository<Scholarship>,
+    private scholarshipRepository: Repository<Scholarship>
   ) {}
 
   async create(createScholarshipDto: CreateScholarshipDto) {
@@ -89,7 +89,7 @@ export class ScholarshipService {
 
     this.scholarshipRepository.delete({ id })
   }
-  
+
   async findByAgencyAndModel(agency_id: number, model: string) {
     if (!model) {
       const scholarships = await this.scholarshipRepository.find({

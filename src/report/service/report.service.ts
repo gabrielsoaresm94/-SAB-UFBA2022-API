@@ -4,8 +4,7 @@ import { AgencyService } from '../../agency/service/agency.service'
 import { ResponseScholarshipDto } from '../../scholarship/dto/response-scholarship.dto'
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 import { StudentsService } from '../../students/service/students.service'
-const PDFKit = require('pdfkit')
-const fs = require('fs')
+import PDFKit from 'pdfkit'
 
 @Injectable()
 export class ReportService {

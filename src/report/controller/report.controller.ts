@@ -23,7 +23,10 @@ export class ReportController {
   }
 
   @Get('/byagency/:id/model/:model')
-  async reportByAgencyAndModel(@Param('id') agency_id: number, @Param('model') model: string) {
+  async reportByAgencyAndModel(
+    @Param('id') agency_id: number,
+    @Param('model') model: string
+  ) {
     return this.reportService.generateReportByAgencyAndModel(agency_id, model)
   }
 
