@@ -182,7 +182,15 @@ export class ReportService {
   }
   async generateReportByAgencyAndModel(agency_id: number, model: string) {
     const scholarships = await this.findByAgencyAndCourse(agency_id, model)
-    return scholarships.filter((scholarship) => scholarship.active).length
+    const jsonData = {}
+    const total = scholarships.filter(
+      (scholarship) => scholarship.active
+    ).length
+    jsonData['scholarships'] = scholarships.filter(
+      (scholarship) => scholarship.active
+    )
+    jsonData['total'] = total
+    return jsonData
   }
 
   async generateReportByAllAgencies() {
