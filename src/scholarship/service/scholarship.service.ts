@@ -31,6 +31,10 @@ export class ScholarshipService {
     return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
 
+  async deactivateScholarship(id: number): Promise<void> {
+    await this.scholarshipRepository.update(id, { active: false });
+  }
+
   async findOneById(id: number): Promise<ResponseScholarshipDto> {
     const scholarship = await this.scholarshipRepository.find({
       where: { id: id },

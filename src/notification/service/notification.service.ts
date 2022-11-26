@@ -30,9 +30,17 @@ export class NotificationService {
       this.getDatePlustDays(90)
     ]
 
-    for (const { scholarship_ends_at, student: studentId } of scholarships) {
+    for (const {
+      scholarship_ends_at,
+      student: studentId,
+      id: scholarshipId
+    } of scholarships) {
       const student = await this.studentsSerivce.findById(studentId)
       this.logger.debug(`notifying for student: ${student.email}`)
+      const today = new Date()
+      if (scholarship_ends_at < today) {
+        await this.scholarshipService.deactivateScholarship(scholarshipId)
+      }
       for (let i = 0; i < 3; i++) {
         if (scholarship_ends_at.toISOString() === dates[i].toISOString()) {
           let months: number
