@@ -27,7 +27,7 @@ export class NotificationService {
     const dates = [
       this.getDatePlustDays(365),
       this.getDatePlustDays(180),
-      this.getDatePlustDays(30)
+      this.getDatePlustDays(90)
     ]
 
     for (const { scholarship_ends_at, student: studentId } of scholarships) {
