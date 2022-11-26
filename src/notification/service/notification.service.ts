@@ -25,9 +25,9 @@ export class NotificationService {
     this.logger.debug('Starting notifying almost ended scholarships')
     const scholarships = await this.scholarshipService.findAll()
     const dates = [
-      this.getDatePlustDays(30),
-      this.getDatePlustDays(60),
-      this.getDatePlustDays(90)
+      this.getDatePlustDays(365),
+      this.getDatePlustDays(180),
+      this.getDatePlustDays(30)
     ]
 
     for (const { scholarship_ends_at, student: studentId } of scholarships) {
