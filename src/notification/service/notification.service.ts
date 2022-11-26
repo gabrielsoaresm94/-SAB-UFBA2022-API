@@ -35,9 +35,17 @@ export class NotificationService {
       this.logger.debug(`notifying for student: ${student.email}`)
       for (let i = 0; i < 3; i++) {
         if (scholarship_ends_at.toISOString() === dates[i].toISOString()) {
+          let months: number
+          if (i == 0) {
+            months = 12
+          } else if (i == 1) {
+            months = 6
+          } else {
+            months = 3
+          }
           this.emailService.sendEmail({
             to: student.email,
-            context: { months: i + 1 },
+            context: { months },
             template: 'notify-end',
             subject: 'Notificação sobre bolsa'
           })
