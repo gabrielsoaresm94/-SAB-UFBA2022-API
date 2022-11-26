@@ -53,7 +53,7 @@ export class NotificationService {
           }
           this.emailService.sendEmail({
             to: student.email,
-            context: { months },
+            context: { months, name: student.name },
             template: 'notify-end',
             subject: 'Notificação sobre bolsa'
           })
