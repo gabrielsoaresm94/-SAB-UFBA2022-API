@@ -5,6 +5,7 @@ import { ResponseScholarshipDto } from '../../scholarship/dto/response-scholarsh
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 import { StudentsService } from '../../students/service/students.service'
 import PDFKit from 'pdfkit'
+import moment from 'moment'
 
 @Injectable()
 export class ReportService {
@@ -182,7 +183,15 @@ export class ReportService {
   }
   async generateReportByAgencyAndModel(agency_id: number, model: string) {
     const scholarships = await this.findByAgencyAndCourse(agency_id, model)
-    return scholarships.filter((scholarship) => scholarship.active).length
+    const jsonData = {}
+    const total = scholarships.filter(
+      (scholarship) => scholarship.active
+    ).length
+    jsonData['scholarships'] = scholarships.filter(
+      (scholarship) => scholarship.active
+    )
+    jsonData['total'] = total
+    return jsonData
   }
 
   async generateReportByAllAgencies() {
@@ -205,6 +214,20 @@ export class ReportService {
       contByAgency = 0
     }
     jsonData['total'] = contByModel
+    return jsonData
+  }
+
+  async findByAgencyAboutToEnd(agency_id: number) {
+    const scholarships = (await this.findByAgencyAndCourse(agency_id, ''))
+      .sort(
+        (scholarship) =>
+          scholarship.extension_ends_at.getTime() - new Date().getTime()
+      )
+      .filter((scholarship) => scholarship.active)
+    const jsonData = {}
+    const total = scholarships.length
+    jsonData['scholarships'] = scholarships
+    jsonData['total'] = total
     return jsonData
   }
 }

@@ -39,4 +39,9 @@ export class ReportController {
   async reportAllAgencies() {
     return this.reportService.generateReportByAllAgencies()
   }
+
+  @Get('/byagency/:id/about-to-end')
+  async reportByAgencyScholarshipsAboutToEnd(@Param('id') agency_id: number) {
+    return this.reportService.findByAgencyAboutToEnd(agency_id)
+  }
 }
