@@ -24,7 +24,8 @@ export class ScholarshipService {
   async findAll(): Promise<ResponseScholarshipDto[]> {
     const scholarships: Scholarship[] = await this.scholarshipRepository.find({
       relations: {
-        student: true
+        student: true,
+        agency: true
       }
     })
 
@@ -32,14 +33,15 @@ export class ScholarshipService {
   }
 
   async deactivateScholarship(id: number): Promise<void> {
-    await this.scholarshipRepository.update(id, { active: false });
+    await this.scholarshipRepository.update(id, { active: false })
   }
 
   async findOneById(id: number): Promise<ResponseScholarshipDto> {
     const scholarship = await this.scholarshipRepository.find({
       where: { id: id },
       relations: {
-        student: true
+        student: true,
+        agency: true
       }
     })
     if (!scholarship || scholarship.length === 0) {
@@ -77,7 +79,8 @@ export class ScholarshipService {
     const scholarship = await this.scholarshipRepository.find({
       where: { student_id: id },
       relations: {
-        student: true
+        student: true,
+        agency: true
       }
     })
     if (!scholarship || scholarship.length === 0) {
@@ -117,4 +120,14 @@ export class ScholarshipService {
     })
     return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
   }
+
+  // async findAllByAgencyId(id: number): Promise<ResponseScholarshipDto[]> {
+  //   const scholarships: Scholarship[] = await this.scholarshipRepository.find({
+  //     where: { agency_id: id },
+  //     relations: {
+  //       agency: true
+  //     }
+  //   })
+  //   return scholarships.map((scholarship) => toScholarshipDTO(scholarship))
+  // }
 }

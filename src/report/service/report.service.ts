@@ -5,7 +5,6 @@ import { ResponseScholarshipDto } from '../../scholarship/dto/response-scholarsh
 import { ScholarshipService } from '../../scholarship/service/scholarship.service'
 import { StudentsService } from '../../students/service/students.service'
 import PDFKit from 'pdfkit'
-import moment from 'moment'
 
 @Injectable()
 export class ReportService {
