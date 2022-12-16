@@ -4,11 +4,11 @@ dotenv.config()
 
 export const connectionSource = new DataSource({
   type: 'postgres',
-  host: process.env.HOST,
-  port: parseInt(process.env.DATABASE_PORT),
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
+  host: process.env.HOST, // process.env.HOST
+  port: 5432, // parseInt(process.env.DATABASE_PORT)
+  username: 'postgres', // process.env.DATABASE_USERNAME
+  password: 'postgres', // process.env.DATABASE_PASSWORD
+  database: 'postgres', // process.env.DATABASE_NAME
   logging: false,
   synchronize: false,
   name: 'default',

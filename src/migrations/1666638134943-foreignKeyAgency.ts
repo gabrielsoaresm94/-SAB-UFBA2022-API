@@ -4,24 +4,9 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
   name = 'foreignKeyAgency1666638134943'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "article" DROP CONSTRAINT "article_student_id_fkey"`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "student" DROP CONSTRAINT "student_advisor_id_fkey"`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" DROP CONSTRAINT "scholarship_student_id_fkey"`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" DROP CONSTRAINT "scholarship_agency_id_fkey"`
-    )
     await queryRunner.query(`ALTER TABLE "admin" DROP COLUMN "name"`)
     await queryRunner.query(
       `ALTER TABLE "admin" ADD "name" character varying NOT NULL`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "admin" DROP CONSTRAINT "admin_email_key"`
     )
     await queryRunner.query(`ALTER TABLE "admin" DROP COLUMN "email"`)
     await queryRunner.query(
@@ -65,9 +50,6 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "advisor" ADD "name" character varying NOT NULL`
     )
-    await queryRunner.query(
-      `ALTER TABLE "advisor" DROP CONSTRAINT "advisor_email_key"`
-    )
     await queryRunner.query(`ALTER TABLE "advisor" DROP COLUMN "email"`)
     await queryRunner.query(
       `ALTER TABLE "advisor" ADD "email" character varying NOT NULL`
@@ -86,9 +68,6 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "student" DROP COLUMN "name"`)
     await queryRunner.query(
       `ALTER TABLE "student" ADD "name" character varying NOT NULL`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "student" DROP CONSTRAINT "student_email_key"`
     )
     await queryRunner.query(`ALTER TABLE "student" DROP COLUMN "email"`)
     await queryRunner.query(
@@ -115,9 +94,6 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     await queryRunner.query(`ALTER TABLE "student" DROP COLUMN "role"`)
     await queryRunner.query(
       `ALTER TABLE "student" ADD "role" character varying DEFAULT 'STUDENT'`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "student" DROP COLUMN "defense_prediction"`
     )
     await queryRunner.query(
       `ALTER TABLE "student" ADD "defense_prediction" TIMESTAMP NOT NULL`
@@ -157,24 +133,9 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "scholarship" ADD "model" character varying NOT NULL`
     )
-    await queryRunner.query(
-      `ALTER TABLE "article" ADD CONSTRAINT "FK_6593243b4fd0fd8a496b2cd58db" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" ADD CONSTRAINT "FK_5a9664d15e435d927f1348ef0d4" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" ADD CONSTRAINT "scholarship_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agency"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" DROP CONSTRAINT "FK_5a9664d15e435d927f1348ef0d4"`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "article" DROP CONSTRAINT "FK_6593243b4fd0fd8a496b2cd58db"`
-    )
     await queryRunner.query(`ALTER TABLE "scholarship" DROP COLUMN "model"`)
     await queryRunner.query(`ALTER TABLE "scholarship" ADD "model" text`)
     await queryRunner.query(`ALTER TABLE "scholarship" DROP COLUMN "salary"`)
@@ -209,9 +170,6 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
       `ALTER TABLE "scholarship" ALTER COLUMN "student_id" DROP NOT NULL`
     )
     await queryRunner.query(
-      `ALTER TABLE "student" DROP COLUMN "defense_prediction"`
-    )
-    await queryRunner.query(
       `ALTER TABLE "student" ADD "defense_prediction" date`
     )
     await queryRunner.query(`ALTER TABLE "student" DROP COLUMN "role"`)
@@ -236,9 +194,6 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     )
     await queryRunner.query(`ALTER TABLE "student" DROP COLUMN "email"`)
     await queryRunner.query(`ALTER TABLE "student" ADD "email" text NOT NULL`)
-    await queryRunner.query(
-      `ALTER TABLE "student" ADD CONSTRAINT "student_email_key" UNIQUE ("email")`
-    )
     await queryRunner.query(`ALTER TABLE "student" DROP COLUMN "name"`)
     await queryRunner.query(`ALTER TABLE "student" ADD "name" text NOT NULL`)
     await queryRunner.query(`ALTER TABLE "advisor" DROP COLUMN "role"`)
@@ -254,9 +209,6 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     )
     await queryRunner.query(`ALTER TABLE "advisor" DROP COLUMN "email"`)
     await queryRunner.query(`ALTER TABLE "advisor" ADD "email" text NOT NULL`)
-    await queryRunner.query(
-      `ALTER TABLE "advisor" ADD CONSTRAINT "advisor_email_key" UNIQUE ("email")`
-    )
     await queryRunner.query(`ALTER TABLE "advisor" DROP COLUMN "name"`)
     await queryRunner.query(`ALTER TABLE "advisor" ADD "name" text NOT NULL`)
     await queryRunner.query(`ALTER TABLE "article" DROP COLUMN "doi_link"`)
@@ -291,22 +243,7 @@ export class foreignKeyAgency1666638134943 implements MigrationInterface {
     )
     await queryRunner.query(`ALTER TABLE "admin" DROP COLUMN "email"`)
     await queryRunner.query(`ALTER TABLE "admin" ADD "email" text NOT NULL`)
-    await queryRunner.query(
-      `ALTER TABLE "admin" ADD CONSTRAINT "admin_email_key" UNIQUE ("email")`
-    )
     await queryRunner.query(`ALTER TABLE "admin" DROP COLUMN "name"`)
     await queryRunner.query(`ALTER TABLE "admin" ADD "name" text NOT NULL`)
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" ADD CONSTRAINT "scholarship_agency_id_fkey" FOREIGN KEY ("agency_id") REFERENCES "agency"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "scholarship" ADD CONSTRAINT "scholarship_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "student" ADD CONSTRAINT "student_advisor_id_fkey" FOREIGN KEY ("advisor_id") REFERENCES "advisor"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "article" ADD CONSTRAINT "article_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
-    )
   }
 }
